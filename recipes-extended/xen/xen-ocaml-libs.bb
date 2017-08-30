@@ -20,7 +20,7 @@ RPROVIDES_xen-xenstored-ocaml = "xen-xenstored xen-xenstored-ocaml"
 DEPENDS += " \
     util-linux \
     xen \
-    xen-blktap \
+    blktap3 \
     libnl \
     ocaml-cross \
     "

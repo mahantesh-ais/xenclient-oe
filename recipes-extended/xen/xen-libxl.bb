@@ -34,7 +34,7 @@ python () {
 DEPENDS += " \
     util-linux \
     xen \
-    xen-blktap \
+    blktap3 \
     libnl \
     "
 SRC_URI_append = " \

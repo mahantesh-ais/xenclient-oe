@@ -82,7 +82,6 @@ SRC_URI_append = " \
     file://libxl-openxt-tweaks.patch \
     file://libxl-domain-state.patch \
     file://libxl-fixup-cmdline-ops.patch \
-    file://libxl-crypto-key-dir.patch \
     file://libxl-fix-reboot.patch \
     file://libxl-display-manager-support.patch \
     file://libxl-xenmgr-support.patch \
@@ -97,6 +96,10 @@ SRC_URI_append = " \
     file://libxl-disable-json-updates.patch \
     file://libxl-allow-non-qdisk-cdrom.patch \
     file://libxl-domain-build-fix-array-size-bug.patch \
+    file://blktap3-link-tools.patch \
+    file://blktap3-qemu-support.patch \
+    file://blktap3-libxl-support.patch \
+    file://libxl-crypto-key-dir.patch \
     file://xsa226-4.9/0001-gnttab-dont-use-possibly-unbounded-tail-calls.patch \
     file://xsa226-4.9/0002-gnttab-fix-transitive-grant-handling.patch \
     file://xsa227.patch \
