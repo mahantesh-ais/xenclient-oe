@@ -6,7 +6,11 @@ DEPENDS = "xen"
 PV = "0+git${SRCPV}"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://github.com/mahantesh-ais/blktap3.git;protocol=https;branch=master"
+SRC_URI = "git://github.com/mahantesh-ais/blktap3.git;protocol=https;branch=master \
+	file://blktap3-vhd-encryption-support.patch \
+	file://blktap3-vhd-keyhash-support.patch \
+	file://blktap3-miscellaneous-oxt-fixes.patch \
+"
 
 S = "${WORKDIR}/git"
 
