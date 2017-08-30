@@ -10,11 +10,15 @@ SRC_URI = "git://github.com/mahantesh-ais/blktap3.git;protocol=https;branch=mast
 	file://blktap3-vhd-encryption-support.patch \
 	file://blktap3-vhd-keyhash-support.patch \
 	file://blktap3-miscellaneous-oxt-fixes.patch \
+	file://tapback.initscript \
 "
 
 S = "${WORKDIR}/git"
 
-inherit autotools-brokensep xenclient
+inherit autotools-brokensep xenclient update-rc.d
+
+INITSCRIPT_NAME = "tapback"
+INITSCRIPT_PARAMS = "defaults 61"
 
 do_configure_prepend() {
 	touch ${S}/EXTRAVERSION
@@ -22,4 +26,7 @@ do_configure_prepend() {
 
 do_install_append() {
 	rm -rf ${D}/usr/lib/systemd
+	install -d ${D}/etc/init.d
+	install -m 0755 ${WORKDIR}/tapback.initscript \
+		${D}/etc/init.d/tapback-daemon
 }
