@@ -44,6 +44,8 @@ FILES_${PN}-dbg += "${ocamllibdir}/*/.debug/*"
 FILES_${PN}-staticdev = "${ocamllibdir}/*/*.a"
 FILES_${PN} = "${ocamllibdir}/*"
 
+CFLAGS_prepend += " -I${STAGING_INCDIR}/blktap "
+
 EXTRA_OEMAKE += "CROSS_SYS_ROOT=${STAGING_DIR_HOST} CROSS_COMPILE=${HOST_PREFIX}"
 EXTRA_OEMAKE += "CONFIG_IOEMU=n"
 EXTRA_OEMAKE += "DESTDIR=${D}"
