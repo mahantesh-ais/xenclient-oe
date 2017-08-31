@@ -60,6 +60,7 @@ FILES_${PN}-staticdev = " \
 FILES_xen-libxlutil += " \
     ${sysconfdir}/xen/xl.conf \
 "
+CFLAGS_prepend += " -I${STAGING_INCDIR}/blktap "
 
 EXTRA_OEMAKE += "CROSS_SYS_ROOT=${STAGING_DIR_HOST} CROSS_COMPILE=${HOST_PREFIX}"
 EXTRA_OEMAKE += "CONFIG_IOEMU=n"
