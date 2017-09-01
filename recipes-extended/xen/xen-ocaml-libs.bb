@@ -24,6 +24,17 @@ DEPENDS += " \
     libnl \
     ocaml-cross \
     "
+
+RDEPENDS_${PN}-base_remove = "\
+    ${PN}-blktap \
+    ${PN}-libblktapctl \
+    ${PN}-libvhd \
+    "
+
+RRECOMMENDS_${PN}-base_remove = " \
+    ${PN}-libblktap \
+    "
+
 EXTRA_OECONF_remove = "--disable-ocamltools"
 
 SRC_URI_append = " \
@@ -37,6 +48,13 @@ PACKAGES = " \
     ${PN}-dbg \
     ${PN}-staticdev \
     ${PN} \
+    "
+PACKAGES_remove = " \
+    ${PN}-blktap \
+    ${PN}-libblktap \
+    ${PN}-libblktapctl \
+    ${PN}-libblktapctl-dev \
+    ${PN}-libblktap-dev \
     "
 
 FILES_${PN}-dev = "${ocamllibdir}/*/*.so"
