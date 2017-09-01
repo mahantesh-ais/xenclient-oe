@@ -15,7 +15,6 @@ RDEPENDS_${PN} = " \
     xen-hvmloader \
     xen-hypervisor \
     xen-flask-tools \
-    xen-libblktapctl \
     xen-libvhd \
     xen-libxenctrl \
     xen-libxenguest \
