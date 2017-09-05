@@ -10,6 +10,7 @@ SRC_URI = "git://github.com/mahantesh-ais/blktap3.git;protocol=https;branch=mast
 	file://blktap3-vhd-encryption-support.patch \
 	file://blktap3-vhd-keyhash-support.patch \
 	file://blktap3-miscellaneous-oxt-fixes.patch \
+	file://blktap3-tap-ctl-optional-pid-ro-mount.patch \
 	file://tapback.initscript \
 "
 
