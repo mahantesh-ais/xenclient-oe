@@ -7,7 +7,7 @@ If absent, defaults to an OpenXT-specific "/config/platform-crypto-keys".
 ################################################################################
 LONG DESCRIPTION:
 ################################################################################
-Plumb "crypto_key_dir" through the toolstack to set TAPDISK2_CRYPTO_KEYDIR env.
+Plumb "crypto_key_dir" through the toolstack to set TAPDISK3_CRYPTO_KEYDIR env.
 
 ################################################################################
 CHANGELOG
