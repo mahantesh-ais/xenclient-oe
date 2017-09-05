@@ -17,7 +17,7 @@ S = "${WORKDIR}/git"
 
 inherit autotools-brokensep xenclient update-rc.d
 
-INITSCRIPT_NAME = "tapback"
+INITSCRIPT_NAME = "tapback-daemon"
 INITSCRIPT_PARAMS = "defaults 61"
 
 do_configure_prepend() {
