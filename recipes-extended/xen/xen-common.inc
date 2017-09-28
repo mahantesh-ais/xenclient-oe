@@ -104,9 +104,14 @@ SRC_URI_append = " \
     file://libxl-blktap3-iso-hotswap.patch \
     file://xsa226-4.9/0001-gnttab-dont-use-possibly-unbounded-tail-calls.patch \
     file://xsa226-4.9/0002-gnttab-fix-transitive-grant-handling.patch \
+    file://xsa226-4.9/0003-gnttab-fix-don-t-use-possibly-unbounded-tail-calls.patch \
     file://xsa227.patch \
     file://xsa228.patch \
     file://xsa230.patch \
+    file://xsa231-4.9.patch \
+    file://xsa232.patch \
+    file://xsa233.patch \
+    file://xsa234-4.9.patch \
     file://xsa235-4.9.patch \
 "
 
