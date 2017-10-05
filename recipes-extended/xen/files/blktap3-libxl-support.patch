@@ -575,20 +575,6 @@ Index: xen-4.9.0/tools/libxl/libxl_device.c
          }
  
          rc = libxl__xs_transaction_commit(gc, &t);
-Index: xen-4.9.0/tools/libxl/libxl_dm.c
-===================================================================
---- xen-4.9.0.orig/tools/libxl/libxl_dm.c
-+++ xen-4.9.0/tools/libxl/libxl_dm.c
-@@ -1515,8 +1515,7 @@ static int libxl__build_device_model_arg
-                  * the bootloader path.
-                  */
-                 if (disks[i].backend == LIBXL_DISK_BACKEND_TAP)
--                    target_path = libxl__blktap_devpath(gc, disks[i].pdev_path,
--                                                        disks[i].format);
-+                    target_path = NULL;
-                 else
-                     target_path = libxl__device_disk_find_local_path(gc,
-                                                  guest_domid, &disks[i], true);
 Index: xen-4.9.0/tools/libxl/libxl_disk.c
 ===================================================================
 --- xen-4.9.0.orig/tools/libxl/libxl_disk.c
