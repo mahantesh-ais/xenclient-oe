@@ -43,6 +43,19 @@ type tapdisk_var_run_t;
 files_pid_file(tapdisk_var_run_t)
 files_pid_filetrans(tapctl_t, tapdisk_var_run_t, { dir })
 
+type tapback_t;
+type tapback_exec_t;
+
+domain_type(tapback_t)
+files_type(tapback_exec_t)
+domain_entry_file(tapback_t, tapback_exec_t)
+role system_r types tapback_t;
+
+#######################################
+#
+# tapback local policy
+#
+
 #######################################
 #
 # tapdisk(2) local policy
