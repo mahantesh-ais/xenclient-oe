@@ -60,47 +60,6 @@ interface(`tapdisk_run',`
 	tapdisk_domtrans($1)
 	role $2 types tapdisk_t;
 ')
-
-########################################
-## <summary>
-##	Execute a domain transition to run tapback daemon.
-## </summary>
-## <param name="domain">
-## 	<summary>
-##	Domain allowed to transition.
-## 	</summary>
-## </param>
-#
-interface(`tapback_domtrans',`
-	gen_require(`
-		type tapback_t, tapback_exec_t;
-	')
-
-	domtrans_pattern($1, tapback_exec_t, tapback_t)
-')
-########################################
-## <summary>
-##	Execute a domain transition to run tapback utility in the specified role.
-## </summary>
-## <param name="domain">
-## 	<summary>
-##	Domain allowed to transition.
-## 	</summary>
-## </param>
-## <param name="role">
-##	<summary>
-##	The role to allowed in domain.
-##	</summary>
-## </param>
-#
-interface(`tapback_run',`
-	gen_require(`
-		type tapback_t, tapback_exec_t;
-	')
-
-	tapback_domtrans($1)
-	role $2 types tapback_t;
-')
 ########################################
 ## <summary>
 ##	List contents of blktap-control directory.
