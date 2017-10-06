@@ -19,5 +19,6 @@
 #############################################################################
 
 /usr/lib/blktap3/tapdisk	--	gen_context(system_u:object_r:tapdisk_exec_t,s0)
+/usr/bin/tapback		--	gen_context(system_u:object_r:tapback_exec_t,s0)
 /usr/sbin/tap-ctl		--	gen_context(system_u:object_r:tapctl_exec_t,s0)
 /var/run/blktap-control(/.*)?		gen_context(system_u:object_r:tapdisk_var_run_t,s0)
