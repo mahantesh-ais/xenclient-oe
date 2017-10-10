@@ -20,10 +20,21 @@ RPROVIDES_xen-xenstored-ocaml = "xen-xenstored xen-xenstored-ocaml"
 DEPENDS += " \
     util-linux \
     xen \
-    xen-blktap \
+    blktap3 \
     libnl \
     ocaml-cross \
     "
+
+RDEPENDS_${PN}-base_remove = "\
+    ${PN}-blktap \
+    ${PN}-libblktapctl \
+    ${PN}-libvhd \
+    "
+
+RRECOMMENDS_${PN}-base_remove = " \
+    ${PN}-libblktap \
+    "
+
 EXTRA_OECONF_remove = "--disable-ocamltools"
 
 SRC_URI_append = " \
@@ -38,11 +49,20 @@ PACKAGES = " \
     ${PN}-staticdev \
     ${PN} \
     "
+PACKAGES_remove = " \
+    ${PN}-blktap \
+    ${PN}-libblktap \
+    ${PN}-libblktapctl \
+    ${PN}-libblktapctl-dev \
+    ${PN}-libblktap-dev \
+    "
 
 FILES_${PN}-dev = "${ocamllibdir}/*/*.so"
 FILES_${PN}-dbg += "${ocamllibdir}/*/.debug/*"
 FILES_${PN}-staticdev = "${ocamllibdir}/*/*.a"
 FILES_${PN} = "${ocamllibdir}/*"
+
+CFLAGS_prepend += " -I${STAGING_INCDIR}/blktap "
 
 EXTRA_OEMAKE += "CROSS_SYS_ROOT=${STAGING_DIR_HOST} CROSS_COMPILE=${HOST_PREFIX}"
 EXTRA_OEMAKE += "CONFIG_IOEMU=n"
