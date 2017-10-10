@@ -42,38 +42,6 @@ Index: xen-4.9.0/tools/libxl/libxl.h
  /* Network Interfaces */
  int libxl_device_nic_add(libxl_ctx *ctx, uint32_t domid, libxl_device_nic *nic,
                           const libxl_asyncop_how *ao_how)
-Index: xen-4.9.0/tools/libxl/libxl_blktap2.c
-===================================================================
---- xen-4.9.0.orig/tools/libxl/libxl_blktap2.c
-+++ xen-4.9.0/tools/libxl/libxl_blktap2.c
-@@ -23,6 +23,18 @@ int libxl__blktap_enabled(libxl__gc *gc)
-     return !tap_ctl_check(&msg);
- }
- 
-+int libxl__get_tap_minor(libxl__gc *gc, libxl_disk_format format, const char *disk)
-+{
-+    const char *type = NULL;
-+    tap_list_t tap;
-+
-+    memset(&tap, 0, sizeof(tap_list_t));
-+
-+    type = libxl__device_disk_string_of_format(format);
-+    tap_ctl_find(type, disk, &tap);
-+    return tap.minor;
-+}
-+
- char *libxl__blktap_devpath(libxl__gc *gc,
-                             const char *disk,
-                             libxl_disk_format format,
-@@ -57,7 +69,7 @@ char *libxl__blktap_devpath(libxl__gc *g
-     return NULL;
- }
- 
--static bool tapdev_is_shared(libxl__gc *gc, const char *params)
-+bool tapdev_is_shared(libxl__gc *gc, const char *params)
- {
-     char **domids, **vbds;
-     char *tp;
 Index: xen-4.9.0/tools/libxl/libxl_device.c
 ===================================================================
 --- xen-4.9.0.orig/tools/libxl/libxl_device.c
@@ -232,9 +200,9 @@ Index: xen-4.9.0/tools/libxl/libxl_internal.h
  _hidden char *libxl__device_libxl_path(libxl__gc *gc, libxl__device *device);
  _hidden int libxl__parse_backend_path(libxl__gc *gc, const char *path,
                                        libxl__device *dev);
-@@ -1765,6 +1766,9 @@ _hidden char *libxl__blktap_devpath(libx
-                                     libxl_disk_format format,
-                                     char *keydir);
+@@ -1764,6 +1765,9 @@ _hidden char *libxl__blktap_devpath(libx
+                                     const char *disk,
+                                     libxl_disk_format format);
  
 +_hidden int libxl__get_tap_minor(libxl__gc *gc, libxl_disk_format format, const char *disk);
 +_hidden bool tapdev_is_shared(libxl__gc *gc, const char *params);
@@ -242,7 +210,7 @@ Index: xen-4.9.0/tools/libxl/libxl_internal.h
  /* libxl__device_destroy_tapdisk:
   *   Destroys any tapdisk process associated with the backend represented
   *   by be_path.
-@@ -1836,6 +1840,7 @@ _hidden int libxl__qmp_restore(libxl__gc
+@@ -1835,6 +1839,7 @@ _hidden int libxl__qmp_restore(libxl__gc
  /* Set dirty bitmap logging status */
  _hidden int libxl__qmp_set_global_dirty_log(libxl__gc *gc, int domid, bool enable);
  _hidden int libxl__qmp_insert_cdrom(libxl__gc *gc, int domid, const libxl_device_disk *disk);
