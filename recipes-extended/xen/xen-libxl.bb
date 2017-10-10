@@ -34,9 +34,20 @@ python () {
 DEPENDS += " \
     util-linux \
     xen \
-    xen-blktap \
+    blktap3 \
     libnl \
     "
+
+RDEPENDS_${PN}-base_remove = "\
+    ${PN}-blktap \
+    ${PN}-libblktapctl \
+    ${PN}-libvhd \
+    "
+
+RRECOMMENDS_${PN}-base_remove = " \
+    ${PN}-libblktap \
+    "
+
 SRC_URI_append = " \
     file://xen-init-dom0.initscript \
     file://xl.conf \
@@ -53,6 +64,14 @@ PACKAGES = " \
     ${PN}-dbg \
     "
 
+PACKAGES_remove = " \
+    ${PN}-blktap \
+    ${PN}-libblktap \
+    ${PN}-libblktapctl \
+    ${PN}-libblktapctl-dev \
+    ${PN}-libblktap-dev \
+    "
+
 FILES_${PN}-staticdev = " \
     ${libdir}/libxlutil.a \
     ${libdir}/libxenlight.a \
@@ -60,6 +79,7 @@ FILES_${PN}-staticdev = " \
 FILES_xen-libxlutil += " \
     ${sysconfdir}/xen/xl.conf \
 "
+CFLAGS_prepend += " -I${STAGING_INCDIR}/blktap "
 
 EXTRA_OEMAKE += "CROSS_SYS_ROOT=${STAGING_DIR_HOST} CROSS_COMPILE=${HOST_PREFIX}"
 EXTRA_OEMAKE += "CONFIG_IOEMU=n"
@@ -105,16 +125,28 @@ do_compile() {
 		       LDLIBS_libxentoollog='-lxentoollog' \
 		       LDLIBS_libxenevtchn='-lxenevtchn' \
 		       -C tools subdir-all-xl
+    oe_runmake LDLIBS_libxenctrl='-lxenctrl' \
+		       LDLIBS_libxenstore='-lxenstore' \
+		       LDLIBS_libblktapctl='-lblktapctl' \
+		       LDLIBS_libxenguest='-lxenguest' \
+		       LDLIBS_libxentoollog='-lxentoollog' \
+		       LDLIBS_libxenevtchn='-lxenevtchn' \
+		       -C tools subdir-all-helpers
 }
 
 do_install() {
     install -d ${D}${datadir}/pkgconfig
     oe_runmake DESTDIR=${D} -C tools subdir-install-libxl
     oe_runmake DESTDIR=${D} -C tools subdir-install-xl
+    oe_runmake DESTDIR=${D} -C tools subdir-install-helpers
     install -d ${D}${sysconfdir}/init.d
     install -m 0755 ${WORKDIR}/xen-init-dom0.initscript \
                     ${D}${sysconfdir}/init.d/xen-init-dom0
     install -d ${D}${sysconfdir}/xen
     install -m 0644 ${WORKDIR}/xl.conf \
                     ${D}${sysconfdir}/xen/xl.conf
+
+    # Since we don't have a xenstore stubdomain, remove the
+    # xenstore stubdomain init program (libdir == /usr/lib)
+    rm -f ${D}/${libdir}/xen/bin/init-xenstore-domain
 }
