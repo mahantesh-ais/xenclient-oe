@@ -6,7 +6,7 @@ DEPENDS = "xen"
 PV = "0+git${SRCPV}"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://${OPENXT_GIT_MIRROR}/blktap3.git;protocol=${OPENXT_GIT_PROTOCOL};branch=${OPENXT_BRANCH} \
+SRC_URI = "git://github.com/mahantesh-ais/blktap3.git;protocol=https;branch=prv4 \
 	file://tapback.initscript \
 "
 
