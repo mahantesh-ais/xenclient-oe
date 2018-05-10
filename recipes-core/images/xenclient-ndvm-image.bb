@@ -61,7 +61,6 @@ IMAGE_INSTALL = " \
     wget \
     ethtool \
     carrier-detect \
-    xenclient-nws \
     modemmanager \
     ppp \
     iputils-ping \

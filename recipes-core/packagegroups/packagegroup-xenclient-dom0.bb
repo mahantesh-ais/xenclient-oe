@@ -83,7 +83,6 @@ RDEPENDS_${PN} = " \
     qemu-wrappers \
     dialog \
     xenclient-udev-force-discreet-net-to-eth0 \
-    xenclient-nwd \
     wget \
     xenclient-repo-certs \
     gobi-loader \
