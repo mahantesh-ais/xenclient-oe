@@ -64,6 +64,7 @@ IMAGE_INSTALL = " \
     modemmanager \
     ppp \
     iputils-ping \
+    openvswitch \
     openvswitch-switch \
 "
 
