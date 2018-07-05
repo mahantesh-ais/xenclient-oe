@@ -1,1 +1,1 @@
-RDEPENDS_${PN}_remove += "python python-twisted python-six"
+RDEPENDS_${PN}_remove += "python3 python3-twisted python3-six"
