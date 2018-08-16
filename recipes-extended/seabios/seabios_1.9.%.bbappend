@@ -1,5 +1,16 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}-${PV}:"
+# meta-virtualization recipe for seabios will fetch using the http:// source
+# which is 308 to the https://, throwing the fetcher off.
+# Tarball are now hosted on https://www.seabios.org/downloads/.
 
+SRC_URI = " \
+    https://www.seabios.org/downloads/${PN}-${PV}.tar.gz \
+    file://hostcc.patch \
+"
+
+PREMIRRORS_prepend += " \
+    http://code.coreboot.org/p/seabios/downloads/.* https://www.seabios.org/downloads/ \n \
+"
 SRC_URI += " \
     file://halt-if-no-bootable.patch \
     file://init-vgahooks-if-optionroms-deployed.patch \

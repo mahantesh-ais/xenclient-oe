@@ -20,11 +20,173 @@
 TYPE=`echo ${XENBUS_PATH} | cut -f 2 -d '/'`
 DOMID=`echo ${XENBUS_PATH} | cut -f 3 -d '/'`
 DEVID=`echo ${XENBUS_PATH} | cut -f 4 -d '/'`
+NMPIDFILE="/var/run/NetworkManager.pid"
+WIRED="/wired/0/bridged"
+WIRELESS="/wifi/0/shared"
+SHARED="/wired/0/shared"
+INTERNAL="/internal/0"
+ANY=""
 
 XAPI=/xapi/${DOMID}/hotplug/${TYPE}/${DEVID}
 
+`echo $@ >> /tmp/vif`
+`echo $vif >> /tmp/vif`
+if [ ! -z ${vif} ]; then
+    MAJOR=`echo ${vif} | cut -f 1 -d '.' | awk -F 'vif' '{print $NF}'`
+    MINOR=`echo ${vif} | cut -f 2 -d '.'`
+    BRIDGE=`xenstore-read backend/vif/${MAJOR}/${MINOR}/bridge`
+    case $BRIDGE in
+        $WIRED)
+               BRIDGE="brbridged"
+               ;;
+        $WIRLESS)
+               BRIDGE="brwireless"
+               ;;
+        $SHARED)
+               BRIDGE="brshared"
+               ;;
+        $INTERNAL)
+               BRIDGE="brinternal"
+               ;;
+        $ANY)
+               BRIDGE="brany"
+               ;;
+    esac
+
+    `echo $@ $MAJOR $MINOR $BRIDGE >> /tmp/vif`
+fi
+
+function restart_nm {
+    #stop nm
+    NMPID=`cat $NMPIDFILE`
+    if [ ! -z $NMPID ]; then
+        `kill $NMPID`
+    fi
+    sleep 1s
+    #start nm
+    `NetworkManager`
+}
+
+function add_bridge {
+    `echo adding bridge  $1 >> /tmp/vif`
+    `ovs-vsctl add-br ${1} >> /tmp/ovs 2>&1`
+    `ifconfig ${1} up`
+    if [ "x$1" = "xbrbridged" ]; then
+        `echo adding eth0 to bridge >> /tmp/vif`
+        `ovs-vsctl add-port brbridged eth0 >> /tmp/ovs 2>&1`
+        `ifconfig eth0 inet 0.0.0.0 promisc up >> /tmp/ovs 2>&1`
+        `iptables -N FORWARD_brbridged`
+        `iptables -F FORWARD_brbridged`
+        `iptables -I FORWARD_brbridged -o brbridged -m physdev --physdev-is-bridged --physdev-out eth0 -j ACCEPT`
+        restart_nm
+    elif [ "x$1" = "xbrwireless" ];then
+        `ovs-vsctl add-port brwireless wlan0 >> /tmp/ovs 2>&1`
+        `ifconfig wlan0 promisc up >> /tmp/ovs 2>&1`
+        restart_nm
+    fi
+}
+
+function add_vif_bridge {
+    `echo inside function  $BRIDGE >> /tmp/vif`
+    #add bridge
+    BREXISTS=`ovs-vsctl show | sed -n '/\bBridge '$BRIDGE'\b/p'`
+    if [ -z $BREXISTS ]; then
+        add_bridge "$BRIDGE"
+    fi
+
+    `echo BREXISTS = $BREXISTS >> /tmp/vif`
+    if [ "x$BRIDGE" = "xbrshared" ] && [ -z $BREXISTS ]; then
+        `echo setting hwaddr >> /tmp/vif`
+        `ovs-vsctl set bridge $BRIDGE other-config:hwaddr=\"fe:ff:ff:ff:ff:ff\"`
+
+        #check and add brbridged
+        BREXISTS=`ovs-vsctl show | sed -n '/\bBridge brbridged\b/p'`
+        if [ -z $BREXISTS ]; then
+             add_bridge brbridged
+        fi
+
+        #get an ip for brbridged
+        `echo getting ip for brbridged >> /tmp/vif`
+        `dhclient brbridged`
+
+        # set ip and netmask for brshared
+        `echo settting ip for brshared >> /tmp/vif`
+        `ifconfig $BRIDGE inet 172.16.1.1 netmask 255.255.255.0 promisc up`
+
+        #add iptables rule for packet forwarding between brshared and brbridged
+        `echo setting iptable rule >> /tmp/vif`
+        `iptables -I FORWARD -i brbridged -o brbridged -m physdev --physdev-in eth0 -j FORWARD_brbridged`
+        `iptables -A FORWARD -i $BRIDGE -o brbridged -j ACCEPT`
+        `iptables -A FORWARD -i brbridged -o $BRIDGE -j ACCEPT`
+        `iptables -A FORWARD -i $BRIDGE -o $BRIDGE -j ACCEPT`
+        `iptables -A FORWARD -o $BRIDGE -j REJECT`
+        `iptables -A FORWARD -i $BRIDGE -j REJECT`
+
+        #add NAT functionality
+        `echo setting masquerade >> /tmp/vif`
+        `iptables -t nat -A POSTROUTING -o brbridged+ -j MASQUERADE`
+
+        #run dnsmasq on brshared
+        `echo running dnsmasq >> /tmp/vif`
+        `dnsmasq -C /etc/dnsmasq-config/dnsmasq.brshared`
+    elif [ "x$BRIDGE" = "xbrwireless" ] && [ -z $BREXISTS ]; then
+        `echo setting hwaddr >> /tmp/vif`
+        `ovs-vsctl set bridge $BRIDGE other-config:hwaddr=\"fe:ff:ff:ff:ff:ff\"`
+
+        # set ip and netmask for brwireless
+        `echo settting ip for brwireless >> /tmp/vif`
+        `ifconfig $BRIDGE inet 172.16.2.1 netmask 255.255.255.0 promisc up`
+
+        #add iptables rule for packet forwarding between brwireless and wlan0
+        `echo setting iptable rule >> /tmp/vif`
+        `iptables -A FORWARD -i $BRIDGE -o wlan0 -j ACCEPT`
+        `iptables -A FORWARD -i wlan0 -o $BRIDGE -j ACCEPT`
+        `iptables -A FORWARD -i $BRIDGE -o $BRIDGE -j ACCEPT`
+        `iptables -A FORWARD -o $BRIDGE -j REJECT`
+        `iptables -A FORWARD -i $BRIDGE -j REJECT`
+
+        #add NAT functionality
+        `echo setting masquerade >> /tmp/vif`
+        `iptables -t nat -A POSTROUTING -o wlan+ -j MASQUERADE`
+
+        #run dnsmasq on brwireless
+        `echo running dnsmasq >> /tmp/vif`
+        `dnsmasq -C /etc/dnsmasq-config/dnsmasq.$BRIDGE`
+    elif [ "x$BRIDGE" = "xbrany" ] && [ -z $BREXISTS ]; then
+        `echo setting hwaddr >> /tmp/vif`
+        `ovs-vsctl set bridge $BRIDGE other-config:hwaddr=\"fe:ff:ff:ff:ff:ff\"`
+
+        # set ip and netmask for brany
+        `echo settting ip for brany >> /tmp/vif`
+        `ifconfig $BRIDGE inet 172.16.3.1 netmask 255.255.255.0 promisc up`
+
+        #run dnsmasq on brany
+        `echo running dnsmasq >> /tmp/vif`
+        `dnsmasq -C /etc/dnsmasq-config/dnsmasq.$BRIDGE`
+    elif [ "x$BRIDGE" = "xbrinternal" ]; then
+        `ovs-vsctl set bridge $BRIDGE other-config:hwaddr=\"fe:ff:ff:ff:ff:ff\"`
+    fi
+
+    #add vif
+    `echo adding vif to bridge >> /tmp/vif`
+    `ovs-vsctl add-port ${BRIDGE} ${vif} >> /tmp/ovs 2>&1`
+    `ifconfig ${vif} inet 0.0.0.0 promisc up`
+
+}
+
 case "$1" in
+    add)
+        #Handle the case after reboot
+        if [ ! -z ${vif} ]; then
+            `/etc/init.d/openvswitch-switch start >> /tmp/ovs 2>&1`
+            `echo calling function  from add >> /tmp/vif`
+            add_vif_bridge
+        fi
+        ;;
+
     online)
+        `echo calling function  from online >> /tmp/vif`
+        add_vif_bridge
         if [ "x${vif}" = "x" ]; then
             exit
         fi
@@ -96,6 +258,10 @@ case "$1" in
         ;;
 
     offline)
+        #remove vif
+        `echo removing vif from bridge >> /tmp/vif`
+        `ovs-vsctl del-port ${BRIDGE} ${vif}`
+
         xenstore-rm "${XAPI}/hotplug"
 
         iptables -D INPUT_vifs -m physdev --physdev-in ${vif} -j INPUT_${vif}
@@ -106,4 +272,3 @@ case "$1" in
         iptables -X FORWARD_${vif}
         ;;
 esac
-

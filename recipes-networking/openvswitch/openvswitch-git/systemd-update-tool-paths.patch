@@ -35,8 +35,8 @@ index 0fa57a9..75c9e02 100644
  Restart=on-failure
  EnvironmentFile=/etc/openvswitch/default.conf
  EnvironmentFile=-/etc/sysconfig/openvswitch
--ExecStartPre=/usr/bin/chown ${OVS_USER_ID} /var/run/openvswitch
-+ExecStartPre=/bin/chown ${OVS_USER_ID} /var/run/openvswitch
+-ExecStartPre=/usr/bin/chown ${OVS_USER_ID} /var/run/openvswitch /var/log/openvswitch
++ExecStartPre=/bin/chown ${OVS_USER_ID} /var/run/openvswitch /var/log/openvswitch
  ExecStartPre=/bin/sh -c 'rm -f /run/openvswitch/useropts; if [ "$${OVS_USER_ID/:*/}" != "root" ]; then /usr/bin/echo "OVSUSER=--ovs-user=${OVS_USER_ID}" > /run/openvswitch/useropts; fi'
  EnvironmentFile=-/run/openvswitch/useropts
  ExecStart=/usr/share/openvswitch/scripts/ovs-ctl \
