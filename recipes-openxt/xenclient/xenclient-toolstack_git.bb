@@ -54,6 +54,14 @@ PV = "0+git${SRCPV}"
 SRCREV = "${AUTOREV}"
 SRC_URI = "git://${OPENXT_GIT_MIRROR}/toolstack.git;protocol=${OPENXT_GIT_PROTOCOL};branch=${OPENXT_BRANCH}	\
            file://vif \
+           file://network \
+           file://nw-attach \
+           file://dnsmasq.brwireless \
+           file://dnsmasq.brshared \
+           file://dnsmasq.brany \
+           file://dnsmasq_script.brwireless \
+           file://dnsmasq_script.brshared \
+           file://dnsmasq_script.brany \
            ${@bb.utils.contains('DISTRO_FEATURES', 'blktap2', '', 'file://0001-blktap3-move-physical-device-xenstore-node-creation-.patch', d)} \
            "
 
@@ -96,6 +104,30 @@ do_install() {
             # root Makefile sur $(DESTDIR)/usr/bin while libs use $(DESTDIR)/$(ocamlfind printconf destdir)
                 oe_runmake -C $ocaml_lib V=1 install
         done
+}
+
+do_install_append_xenclient-dom0() {
+        rm -f ${D}/etc/xen/scripts/network
+        rm -f ${D}/etc/xen/scripts/nw-attach
+        install -m 0755 ${WORKDIR}/network ${D}/etc/xen/scripts/network
+        install -m 0755 ${WORKDIR}/nw-attach ${D}/etc/xen/scripts/nw-attach
+}
+
+do_install_append_xenclient-ndvm() {
+        rm -f ${D}/etc/dnsmasq-config/dnsmasq.brwireless
+        rm -f ${D}/etc/dnsmasq-config/dnsmasq.brshared
+        rm -f ${D}/etc/dnsmasq-config/dnsmasq.brany
+        rm -f ${D}/etc/dnsmasq-config/dnsmasq_script.brwireless
+        rm -f ${D}/etc/dnsmasq-config/dnsmasq_script.brshared
+        rm -f ${D}/etc/dnsmasq-config/dnsmasq_script.brany
+
+        install -d ${D}/etc/dnsmasq-config
+        install -m 0755 ${WORKDIR}/dnsmasq.brwireless ${D}/etc/dnsmasq-config/dnsmasq.brwireless
+        install -m 0755 ${WORKDIR}/dnsmasq.brshared ${D}/etc/dnsmasq-config/dnsmasq.brshared
+        install -m 0755 ${WORKDIR}/dnsmasq.brany ${D}/etc/dnsmasq-config/dnsmasq.brany
+        install -m 0755 ${WORKDIR}/dnsmasq_script.brwireless ${D}/etc/dnsmasq-config/dnsmasq_script.brwireless
+        install -m 0755 ${WORKDIR}/dnsmasq_script.brshared ${D}/etc/dnsmasq-config/dnsmasq_script.brshared
+        install -m 0755 ${WORKDIR}/dnsmasq_script.brany ${D}/etc/dnsmasq-config/dnsmasq_script.brany
 }
 
 do_install_append_xenclient-nilfvm() {

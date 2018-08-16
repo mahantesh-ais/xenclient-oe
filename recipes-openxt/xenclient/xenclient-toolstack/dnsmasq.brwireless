@@ -1,0 +1,17 @@
+interface=brwireless
+bind-interfaces
+no-dhcp-interface=lo
+except-interface=lo
+resolv-file=/var/volatile/etc/resolv.conf.brbridged
+
+dnsout-interface=wlan0
+
+dhcp-lease-max=90
+dhcp-range=172.16.2.10,172.16.2.100,100d
+dhcp-leasefile=/tmp/leases.brwireless
+dhcp-option=3,172.16.2.1 # router
+dhcp-option=6,172.16.2.1 # dns
+dhcp-option=1,255.255.255.0 # subnet masq
+
+dhcp-script=/etc/dnsmasq-config/dnsmasq_script.brwireless
+leasefile-ro

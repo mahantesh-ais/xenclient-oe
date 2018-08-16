@@ -70,9 +70,27 @@ stop () {
     ovs_ctl stop
 }
 
+wmac () {
+    ETHOMAC=`ifconfig -a | sed -n '/\beth0\b/p' | awk -F 'HWaddr ' '{print $NF}'`
+    `echo $ETHOMAC >> /tmp/mac`
+    `xenstore-write backend/eth/0/mac $ETHOMAC`
+    
+    # Modify mac addr and assign it to eth0
+    MSB=`echo $ETHOMAC | cut -f 1 -d ':'`
+    LBS=`echo $ETHOMAC | cut --complement -f 1 -d ':'`
+    XMSB=0x$MSB
+    AMSB=$(( $XMSB | 0x02 ))
+    XAMSB=`printf '%X' "$AMSB"`
+    HWADDR=$XAMSB:$LBS
+    `echo HWADDR=$HWADDR >> /tmp/hwaddr`
+    `ifconfig eth0 hw ether $HWADDR`
+    `NetworkManager`
+}
+
 case $1 in
     start)
         start
+	wmac
 	;;
     stop | force-stop)
         stop
