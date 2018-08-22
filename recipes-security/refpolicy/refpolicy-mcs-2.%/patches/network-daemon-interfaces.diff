@@ -77,7 +77,7 @@ Index: refpolicy/policy/modules/system/modutils.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/modutils.te
 +++ refpolicy/policy/modules/system/modutils.te
-@@ -141,6 +141,12 @@ optional_policy(`
+@@ -148,6 +148,12 @@ optional_policy(`
  ')
  
  optional_policy(`
@@ -94,7 +94,7 @@ Index: refpolicy/policy/modules/system/sysnetwork.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/sysnetwork.te
 +++ refpolicy/policy/modules/system/sysnetwork.te
-@@ -391,6 +391,10 @@ optional_policy(`
+@@ -392,6 +392,10 @@ optional_policy(`
  ')
  
  optional_policy(`
@@ -109,7 +109,7 @@ Index: refpolicy/policy/modules/system/udev.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/udev.te
 +++ refpolicy/policy/modules/system/udev.te
-@@ -322,6 +322,10 @@ optional_policy(`
+@@ -329,6 +329,10 @@ optional_policy(`
  ')
  
  optional_policy(`

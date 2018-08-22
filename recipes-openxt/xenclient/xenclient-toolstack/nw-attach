@@ -3,18 +3,18 @@ NDVM=`xec-vm -n Network get domid`
 XSPATH=/local/domain/$NDVM/backend/eth/0/mac
 MAC=`xenstore-read "${XSPATH}"`
 BRBRIDGED="/wired/0/bridged"
-`echo $XSPATH >> /nw-attach`
+#DEBUG: echo $XSPATH >> /nw-attach
 if [ -z $MAC ]; then
     xenstore-write "${XSPATH}" ""
 fi
 xenstore-chmod "${XSPATH}" "n$NDVM r0"
-`echo waiting for mac >> /nw-attach`
+#DEBUG: echo waiting for mac >> /nw-attach
 while [ -z $MAC ]; do
     sleep 1
     #TODO: Should we check if NDVM value has changed here ? possibly because of reboot.
     MAC=`xenstore-read "${XSPATH}"`
-    `echo MAC=$MAC >> /nw-attach`
+    #DEBUG: echo MAC=$MAC >> /nw-attach
 done
-`xl network-attach 0 backend=$NDVM bridge=$BRBRIDGED`
-`ifconfig eth0 hw ether $MAC`
-`udhcpc eth0`
+xl network-attach 0 backend=$NDVM bridge=$BRBRIDGED
+ifconfig eth0 hw ether $MAC
+udhcpc eth0

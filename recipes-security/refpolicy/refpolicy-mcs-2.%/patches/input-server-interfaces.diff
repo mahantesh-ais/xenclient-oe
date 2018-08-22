@@ -77,7 +77,7 @@ Index: refpolicy/policy/modules/system/mount.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/mount.te
 +++ refpolicy/policy/modules/system/mount.te
-@@ -250,6 +250,10 @@ optional_policy(`
+@@ -251,6 +251,10 @@ optional_policy(`
  	unconfined_run_to(unconfined_mount_t, mount_exec_t)
  ')
  

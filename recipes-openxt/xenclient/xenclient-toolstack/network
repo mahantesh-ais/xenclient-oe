@@ -1,6 +1,6 @@
 #!/bin/bash
 NDVMUUID=`xec-vm -n Network get uuid`
-`echo $1 $2 >> /network`
+#DEBUG: echo $1 $2 >> /network
 if [ "x$1" != "x$NDVMUUID" ]; then
     exit 0
 fi
@@ -8,5 +8,5 @@ fi
 if [ "x$2" != "xrunning" ]; then
     exit 0
 fi
-`echo running daemon nw attach >> /network`
-`nohup /etc/xen/scripts/nw-attach &`
+#DEBUG: echo running daemon nw attach >> /network
+nohup /etc/xen/scripts/nw-attach &
