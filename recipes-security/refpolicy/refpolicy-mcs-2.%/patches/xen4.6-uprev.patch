@@ -27,7 +27,7 @@ Index: refpolicy/policy/modules/kernel/devices.if
 ===================================================================
 --- refpolicy.orig/policy/modules/kernel/devices.if
 +++ refpolicy/policy/modules/kernel/devices.if
-@@ -5243,6 +5243,27 @@ interface(`dev_getattr_xen',`
+@@ -5261,6 +5261,27 @@ interface(`dev_getattr_xen',`
  
  ########################################
  ## <summary>

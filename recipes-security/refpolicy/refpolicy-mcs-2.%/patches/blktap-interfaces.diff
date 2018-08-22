@@ -68,7 +68,7 @@ Index: refpolicy/policy/modules/system/mount.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/mount.te
 +++ refpolicy/policy/modules/system/mount.te
-@@ -179,6 +179,10 @@ tunable_policy(`allow_mount_anyfile',`
+@@ -180,6 +180,10 @@ tunable_policy(`allow_mount_anyfile',`
  ')
  
  optional_policy(`

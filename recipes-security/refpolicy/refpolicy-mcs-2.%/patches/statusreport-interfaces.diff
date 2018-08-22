@@ -76,7 +76,7 @@ Index: refpolicy/policy/modules/system/mount.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/mount.te
 +++ refpolicy/policy/modules/system/mount.te
-@@ -259,3 +259,8 @@ optional_policy(`
+@@ -260,3 +260,8 @@ optional_policy(`
  	kernel_dontaudit_read_xen_state(mount_t)
  	kernel_dontaudit_write_xen_state(mount_t)
  ')
@@ -89,7 +89,7 @@ Index: refpolicy/policy/modules/system/sysnetwork.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/sysnetwork.te
 +++ refpolicy/policy/modules/system/sysnetwork.te
-@@ -403,6 +403,11 @@ optional_policy(`
+@@ -404,6 +404,11 @@ optional_policy(`
  ')
  
  optional_policy(`

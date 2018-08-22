@@ -280,7 +280,7 @@ Index: refpolicy/policy/modules/system/mount.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/mount.te
 +++ refpolicy/policy/modules/system/mount.te
-@@ -270,3 +270,7 @@ optional_policy(`
+@@ -271,3 +271,7 @@ optional_policy(`
  	statusreport_write_storage_files(mount_t)
  	statusreport_getattr_storage_files(mount_t)
  ')
@@ -328,7 +328,7 @@ Index: refpolicy/policy/modules/system/sysnetwork.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/sysnetwork.te
 +++ refpolicy/policy/modules/system/sysnetwork.te
-@@ -391,6 +391,10 @@ optional_policy(`
+@@ -392,6 +392,10 @@ optional_policy(`
  ')
  
  optional_policy(`
@@ -343,7 +343,7 @@ Index: refpolicy/policy/modules/system/udev.te
 ===================================================================
 --- refpolicy.orig/policy/modules/system/udev.te
 +++ refpolicy/policy/modules/system/udev.te
-@@ -358,6 +358,13 @@ optional_policy(`
+@@ -365,6 +365,13 @@ optional_policy(`
  ')
  
  optional_policy(`
@@ -357,7 +357,7 @@ Index: refpolicy/policy/modules/system/udev.te
  	xserver_read_xdm_pid(udev_t)
  ')
  
-@@ -388,4 +395,8 @@ dev_dontaudit_rw_generic_chr_files(udevr
+@@ -395,4 +402,8 @@ dev_dontaudit_rw_generic_chr_files(udevr
  fs_search_tmpfs(udevrc_t)
  seutil_domtrans_setfiles(udevrc_t)
  
