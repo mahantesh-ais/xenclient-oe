@@ -33,7 +33,6 @@ tmpfs           /media/ram                              tmpfs  defaults,size=1M 
 
 tmpfs           /etc/NetworkManager                     tmpfs  defaults,rootcontext=system_u:object_r:NetworkManager_etc_t:s0,size=2M           0 0
 tmpfs           /etc/openvswitch			tmpfs  defaults,size=20M           0 0
-tmpfs           /etc/dnsmasq-config                     tmpfs  defaults,rootcontext=system_u:object_r:dnsmasq_etc_t:s0,size=1M                  0 0
 tmpfs           /etc/iproute2                           tmpfs  defaults,rootcontext=system_u:object_r:net_conf_t:s0,size=1M                     0 0
 
 /dev/xvdb       none                                    swap   sw                                                                               0 0
