@@ -39,7 +39,7 @@ if [ ! -z ${vif} ]; then
         $WIRED)
                BRIDGE="brbridged"
                ;;
-        $WIRLESS)
+        $WIRELESS)
                BRIDGE="brwireless"
                ;;
         $SHARED)
