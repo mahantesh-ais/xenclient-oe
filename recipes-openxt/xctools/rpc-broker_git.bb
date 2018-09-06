@@ -8,9 +8,10 @@ PV = "0+git${SRCPV}"
 SRCREV = "${AUTOREV}"
 SRC_URI = "git://github.com/tijko/rpc-broker;protocol=https;branch=master \
            file://rpc-broker.initscript                                   \
+           file://rpc-broker.rules                                        \
           "
 
-S = "${WORKDIR}/git/"
+S = "${WORKDIR}/git/rpc-broker"
 
 INITSCRIPT_NAME = "rpc-broker"
 
@@ -23,5 +24,5 @@ do_install_append() {
     install -m 0755 -d ${D}/etc
     install -m 0755 -d ${D}/etc/init.d
     install -m 0755 ${WORKDIR}/rpc-broker.initscript ${D}${sysconfdir}/init.d/rpc-broker
-    install -m 0644 ${WORKDIR}/rpc-broker.rules ${D}${sysconfdir}/rpc-broker.rules
+    install -m 0644 ${WORKDIR}/rpc-broker.rules ${D}/etc/rpc-broker.rules
 }
