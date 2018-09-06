@@ -11,7 +11,7 @@ SRC_URI = "git://github.com/tijko/rpc-broker;protocol=https;branch=master \
            file://rpc-broker.rules                                        \
           "
 
-S = "${WORKDIR}/git/rpc-broker"
+S = "${WORKDIR}/git"
 
 INITSCRIPT_NAME = "rpc-broker"
 
