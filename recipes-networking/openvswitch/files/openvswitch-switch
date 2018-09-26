@@ -82,9 +82,10 @@ wmac () {
     AMSB=$(( $XMSB | 0x02 ))
     XAMSB=`printf '%X' "$AMSB"`
     HWADDR=$XAMSB:$LBS
-    `echo HWADDR=$HWADDR >> /tmp/hwaddr`
     `ifconfig eth0 hw ether $HWADDR`
     `NetworkManager`
+    `xenstore-write /state/00000000-0000-0000-0000-000000000002/state running`
+    `xenstore-chmod /state/00000000-0000-0000-0000-000000000002/state n0`
 }
 
 case $1 in
