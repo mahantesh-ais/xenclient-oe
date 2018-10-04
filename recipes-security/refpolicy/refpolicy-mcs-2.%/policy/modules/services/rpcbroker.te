@@ -29,3 +29,6 @@ files_type(rpcbroker_etc_t)
 
 type rpcbroker_t;
 init_daemon_domain(rpcbroker_t, rpcbroker_exec_t)
+
+allow rpcbroker_t rpcbroker_etc_t:file read_file_perms;
+allow rpcbroker_t self:fifo_file rw_fifo_file_perms;
