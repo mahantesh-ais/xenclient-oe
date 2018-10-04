@@ -20,10 +20,6 @@
 
 policy_module(rpcbroker, 0.1)
 
-require {
-    type v4v_t;
-}
-
 # Type for rpc-broker executable file.
 type rpcbroker_exec_t;
 
@@ -39,4 +35,4 @@ allow rpcbroker_t self:fifo_file rw_fifo_file_perms;
 
 allow rpcbroker_t self:unix_dgram_socket { sendto create_socket_perms };
 
-allow rpcbroker_t v4v_t:chr_file rw_chr_file_perms;
+xc_files_rw_v4v_chr(rpcbroker_t)
