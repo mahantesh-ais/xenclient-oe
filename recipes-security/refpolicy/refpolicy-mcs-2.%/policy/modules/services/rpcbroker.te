@@ -34,3 +34,5 @@ allow rpcbroker_t rpcbroker_etc_t:file read_file_perms;
 allow rpcbroker_t self:fifo_file rw_fifo_file_perms;
 
 allow rpcbroker_t self:unix_dgram_socket { sendto create_socket_perms };
+
+allow rpcbroker_t v4v_t:chr_file rw_chr_file_perms;
