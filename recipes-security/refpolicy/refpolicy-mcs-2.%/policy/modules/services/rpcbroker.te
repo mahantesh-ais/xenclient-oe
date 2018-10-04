@@ -36,3 +36,5 @@ allow rpcbroker_t self:fifo_file rw_fifo_file_perms;
 allow rpcbroker_t self:unix_dgram_socket { sendto create_socket_perms };
 
 xc_files_rw_v4v_chr(rpcbroker_t)
+xen_stream_connect_xenstore(rpcbroker_t)
+
