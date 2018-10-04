@@ -38,3 +38,5 @@ allow rpcbroker_t self:unix_dgram_socket { sendto create_socket_perms };
 xc_files_rw_v4v_chr(rpcbroker_t)
 xen_stream_connect_xenstore(rpcbroker_t)
 
+dev_dontaudit_read_urand(rpcbroker_t)
+dev_write_urand(rpcbroker_t)
