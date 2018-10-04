@@ -20,6 +20,10 @@
 
 policy_module(rpcbroker, 0.1)
 
+require {
+    type v4v_t;
+}
+
 # Type for rpc-broker executable file.
 type rpcbroker_exec_t;
 
