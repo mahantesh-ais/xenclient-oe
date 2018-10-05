@@ -1,4 +1,3 @@
-DEFAULT_ENFORCING = "permissive"
 FILESEXTRAPATHS_prepend := "${THISDIR}/${BPN}-${PV}:"
 
 # Configuration.

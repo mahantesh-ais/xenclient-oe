@@ -6,12 +6,12 @@ DEPENDS = "json-c libwebsockets libv4v dbus libxml2"
 PV = "0+git${SRCPV}"
 
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://github.com/tijko/rpc-broker;protocol=https;branch=master \
-           file://rpc-broker.initscript                                   \
-           file://rpc-broker.rules                                        \
+SRC_URI = "git://${OPENXT_GIT_MIRROR}/xctools.git;protocol=${OPENXT_GIT_PROTOCOL};branch=${OPENXT_BRANCH} \
+           file://rpc-broker.initscript                                                                   \
+           file://rpc-broker.rules                                                                        \
           "
 
-S = "${WORKDIR}/git"
+S = "${WORKDIR}/git/rpc-broker"
 
 INITSCRIPT_NAME = "rpc-broker"
 INITSCRIPT_PARAMS = "defaults 40"
