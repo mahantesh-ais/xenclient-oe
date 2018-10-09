@@ -25,6 +25,9 @@ type rpcbroker_exec_t;
 
 # Type for rpc-broker.rules file.
 type rpcbroker_etc_t;
+
+type rpcbroker_websockets_t;
+
 files_type(rpcbroker_etc_t)
 
 type rpcbroker_t;
@@ -45,10 +48,16 @@ dbus_system_bus_client(rpcbroker_t)
 dbus_connect_system_bus(rpcbroker_t)
 dbus_send_system_bus(rpcbroker_t)
 
+# DBus chat rules
 network_daemon_dbus_chat(rpcbroker_t)
 xenpmd_dbus_chat(rpcbroker_t)
 input_server_dbus_chat(rpcbroker_t)
 updatemgr_dbus_chat(rpcbroker_t)
 vusbd_dbus_chat(rpcbroker_t)
 xen_dbus_chat(rpcbroker_t)
+dbd_dbus_chat(rpcbroker_t)
+
 logging_send_syslog_msg(rpcbroker_t)
+
+corecmd_exec_bin(rpcbroker_websockets_t)
+miscfiles_read_generic_certs(rpcbroker_websockets_t)
