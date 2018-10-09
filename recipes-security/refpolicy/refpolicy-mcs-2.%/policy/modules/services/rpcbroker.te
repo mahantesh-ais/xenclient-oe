@@ -38,6 +38,8 @@ allow rpcbroker_t self:fifo_file rw_fifo_file_perms;
 
 allow rpcbroker_t self:unix_dgram_socket { sendto create_socket_perms };
 
+init_daemon_domain_spec_domtrans(rpcbroker_websockets_t, rpcbroker_exec_t)
+
 xc_files_rw_v4v_chr(rpcbroker_t)
 xen_stream_connect_xenstore(rpcbroker_t)
 
@@ -45,6 +47,8 @@ dev_dontaudit_read_urand(rpcbroker_t)
 dev_write_urand(rpcbroker_t)
 
 dbus_system_bus_client(rpcbroker_t)
+dbus_system_bus_client(rpcbroker_websockets_t)
+
 dbus_connect_system_bus(rpcbroker_t)
 dbus_send_system_bus(rpcbroker_t)
 
@@ -56,8 +60,21 @@ updatemgr_dbus_chat(rpcbroker_t)
 vusbd_dbus_chat(rpcbroker_t)
 xen_dbus_chat(rpcbroker_t)
 dbd_dbus_chat(rpcbroker_t)
+surfman_dbus_chat(rpcbroker_t)
 
+network_daemon_dbus_chat(rpcbroker_websockets_t)
+xenpmd_dbus_chat(rpcbroker_websockets_t)
+input_server_dbus_chat(rpcbroker_websockets_t)
+updatemgr_dbus_chat(rpcbroker_websockets_t)
+vusbd_dbus_chat(rpcbroker_websockets_t)
+xen_dbus_chat(rpcbroker_websockets_t)
+dbd_dbus_chat(rpcbroker_websockets_t)
+surfman_dbus_chat(rpcbroker_websockets_t)
+# access logging
 logging_send_syslog_msg(rpcbroker_t)
 
+# websockets ssl privileges 
 corecmd_exec_bin(rpcbroker_websockets_t)
+
+# websockets ssl certificates
 miscfiles_read_generic_certs(rpcbroker_websockets_t)
