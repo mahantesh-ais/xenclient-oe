@@ -78,3 +78,11 @@ corecmd_exec_bin(rpcbroker_websockets_t)
 
 # websockets ssl certificates
 miscfiles_read_generic_certs(rpcbroker_websockets_t)
+
+# XXX testing of corenetwork interfaces
+corenet_tcp_bind_generic_port(rpcbroker_websockets_t)
+corenet_tcp_bind_generic_port(rpcbroker_t)
+
+corenet_tcp_bind_generic_node(rpcbroker_websockets_t)
+corenet_tcp_bind_generic_node(rpcbroker_t)
+
