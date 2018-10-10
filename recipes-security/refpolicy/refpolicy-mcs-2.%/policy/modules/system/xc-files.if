@@ -124,7 +124,7 @@ interface(`xc_files_rw_v4v_chr',`
 	')
 
 	dev_list_all_dev_nodes($1)
-	allow $1 v4v_t:chr_file rw_chr_file_perms;
+	allow $1 v4v_t:chr_file { rw_chr_file_perms ioctl };
 	# TODO: related to v4vfs labeling, see socketfs as example
 	allow $1 self:dir	rw_dir_perms;
 ')
