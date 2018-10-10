@@ -80,9 +80,23 @@ corecmd_exec_bin(rpcbroker_websockets_t)
 miscfiles_read_generic_certs(rpcbroker_websockets_t)
 
 # XXX testing of corenetwork interfaces
-corenet_tcp_bind_generic_port(rpcbroker_websockets_t)
+corenet_node(rpcbroker_t)
+corenet_node(rpcbroker_websockets_t)
+
 corenet_tcp_bind_generic_port(rpcbroker_t)
+corenet_tcp_bind_generic_port(rpcbroker_websockets_t)
 
-corenet_tcp_bind_generic_node(rpcbroker_websockets_t)
 corenet_tcp_bind_generic_node(rpcbroker_t)
+corenet_tcp_bind_generic_node(rpcbroker_websockets_t)
 
+corenet_tcp_bind_http_cache_port(rpcbroker_t)
+corenet_tcp_bind_http_cache_port(rpcbroker_websockets_t)
+
+corenet_tcp_connect_all_ports(rpcbroker_t)
+corenet_tcp_connect_all_ports(rpcbroker_websockets_t)
+
+corenet_tcp_sendrecv_generic_node(rpcbroker_t)
+corenet_tcp_sendrecv_generic_node(rpcbroker_websockets_t)
+
+corenet_tcp_sendrecv_all_ports(rpcbroker_t)
+corenet_tcp_sendrecv_all_ports(rpcbroker_websockets_t)
