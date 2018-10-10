@@ -45,11 +45,11 @@ allow rpcbroker_t node_t:tcp_socket node_bind;
 allow rpcbroker_websockets_t http_cache_port_t:tcp_socket name_bind;
 allow rpcbroker_websockets_t node_t:tcp_socket node_bind;
 
-allow rpcbroker_t xenstored_t:unix_stream_socket connectto;
-allow rpcbroker_websockets_t xenstored_t:unix_stream_socket connectto;
+#allow rpcbroker_t xenstored_t:unix_stream_socket connectto;
+#allow rpcbroker_websockets_t xenstored_t:unix_stream_socket connectto;
 #XXX error (add-in contrib/xen.if and system/xc-files.if)
-allow rpcbroker_t v4v_t:chr_file ioctl;
-allow rpcbroker_websockets_t v4v_t:chr_file ioctl;
+#allow rpcbroker_t v4v_t:chr_file ioctl;
+#allow rpcbroker_websockets_t v4v_t:chr_file ioctl;
 ##
 allow rpcbroker_t self:unix_dgram_socket { sendto create_socket_perms };
 
@@ -60,8 +60,9 @@ xc_files_rw_v4v_chr(rpcbroker_websockets_t)
 
 xen_stream_connect_xenstore(rpcbroker_t)
 
-dev_dontaudit_read_urand(rpcbroker_t)
+#dev_dontaudit_read_urand(rpcbroker_t)
 dev_write_urand(rpcbroker_t)
+dev_read_urand(rpcbroker_t)
 
 dbus_system_bus_client(rpcbroker_t)
 dbus_system_bus_client(rpcbroker_websockets_t)
