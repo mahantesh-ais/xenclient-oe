@@ -33,10 +33,12 @@ files_type(rpcbroker_etc_t)
 type rpcbroker_t;
 init_daemon_domain(rpcbroker_t, rpcbroker_exec_t)
 
-allow rpcbroker_t rpcbroker_etc_t:file read_file_perms;
+allow rpcbroker_t rpcbroker_etc_t:file rw_file_perms;
 allow rpcbroker_t self:fifo_file rw_fifo_file_perms;
 
 ##
+allow rpcbroker_t rpcbroker_exec_t:file execute;
+
 allow rpcbroker_t http_cache_port_t:tcp_socket name_bind;
 allow rpcbroker_t node_t:tcp_socket node_bind;
 
