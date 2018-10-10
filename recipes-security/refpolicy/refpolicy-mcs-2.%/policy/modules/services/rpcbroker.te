@@ -36,6 +36,13 @@ init_daemon_domain(rpcbroker_t, rpcbroker_exec_t)
 allow rpcbroker_t rpcbroker_etc_t:file read_file_perms;
 allow rpcbroker_t self:fifo_file rw_fifo_file_perms;
 
+##
+allow rpcbroker_t http_cache_port_t:tcp_socket name_bind;
+allow rpcbroker_t node_t:tcp_socket node_bind;
+
+allow rpcbroker_websockets_t http_cache_port_t:tcp_socket name_bind;
+allow rpcbroker_websockets_t node_t:tcp_socket node_bind;
+##
 allow rpcbroker_t self:unix_dgram_socket { sendto create_socket_perms };
 
 init_daemon_domain_spec_domtrans(rpcbroker_websockets_t, rpcbroker_exec_t)
@@ -100,3 +107,4 @@ corenet_tcp_sendrecv_generic_node(rpcbroker_websockets_t)
 
 corenet_tcp_sendrecv_all_ports(rpcbroker_t)
 corenet_tcp_sendrecv_all_ports(rpcbroker_websockets_t)
+
