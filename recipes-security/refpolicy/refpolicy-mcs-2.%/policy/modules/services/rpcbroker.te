@@ -56,6 +56,8 @@ allow rpcbroker_t self:unix_dgram_socket { sendto create_socket_perms };
 init_daemon_domain_spec_domtrans(rpcbroker_websockets_t, rpcbroker_exec_t)
 
 xc_files_rw_v4v_chr(rpcbroker_t)
+xc_files_rw_v4v_chr(rpcbroker_websockets_t)
+
 xen_stream_connect_xenstore(rpcbroker_t)
 
 dev_dontaudit_read_urand(rpcbroker_t)

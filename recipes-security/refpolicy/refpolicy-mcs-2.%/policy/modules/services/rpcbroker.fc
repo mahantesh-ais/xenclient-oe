@@ -18,5 +18,5 @@
 #
 #############################################################################
 
-/usr/sbin/rpc-broker	--	gen_context(system_u:object_r:rpcbroker_exec_t,s0)
+/usr/sbin/rpc-broker	--	gen_context(root:object_r:rpcbroker_exec_t,s0)
 /etc/rpc-broker.rules	--	gen_context(system_u:object_r:rpcbroker_etc_t,s0)
