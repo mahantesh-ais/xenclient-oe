@@ -88,6 +88,13 @@ function add_bridge {
 
 function add_vif_bridge {
     #DEBUG: echo inside function  $BRIDGE >> /tmp/vif
+    OVS_PATH=`ovs-vsctl show | grep version | cut -f 1 -d ':'`
+    while [ -z $OVS_PATH ]; do
+        sleep 1
+        OVS_PATH=`ovs-vsctl show | grep version | cut -f 1 -d ':'`
+        echo ovs path is $OVS_PATH >> /tmp/vif
+    done
+
     #add bridge
     BREXISTS=`ovs-vsctl show | sed -n '/\bBridge '$BRIDGE'\b/p'`
     if [ -z $BREXISTS ]; then
@@ -259,6 +266,7 @@ case "$1" in
     offline)
         #remove vif
         #DEBUG: echo removing vif from bridge >> /tmp/vif
+	BRIDGE=`ovs-vsctl port-to-br ${vif}`
         ovs-vsctl del-port ${BRIDGE} ${vif}
 
         xenstore-rm "${XAPI}/hotplug"
