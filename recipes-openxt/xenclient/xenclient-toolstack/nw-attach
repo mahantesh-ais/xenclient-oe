@@ -15,6 +15,10 @@ while [ -z $MAC ]; do
     MAC=`xenstore-read "${XSPATH}"`
     #DEBUG: echo MAC=$MAC >> /nw-attach
 done
+NICID=`xenstore-list /local/domain/0/device/vif`
+if [ ! -z $NICID ]; then
+    xl network-detach 0 0
+fi
 xl network-attach 0 backend=$NDVM bridge=$BRBRIDGED
 ifconfig eth0 hw ether $MAC
 udhcpc eth0
