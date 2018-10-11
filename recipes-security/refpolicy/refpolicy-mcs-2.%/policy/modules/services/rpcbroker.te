@@ -59,6 +59,8 @@ dbus_send_system_bus(rpcbroker_t)
 
 # DBus chat rules
 network_daemon_dbus_chat(rpcbroker_t)
+network_slave_dbus_chat(rpcbroker_t)
+
 xenpmd_dbus_chat(rpcbroker_t)
 input_server_dbus_chat(rpcbroker_t)
 updatemgr_dbus_chat(rpcbroker_t)
@@ -68,6 +70,8 @@ dbd_dbus_chat(rpcbroker_t)
 surfman_dbus_chat(rpcbroker_t)
 
 network_daemon_dbus_chat(rpcbroker_websockets_t)
+network_slave_dbus_chat(rpcbroker_websockets_t)
+
 xenpmd_dbus_chat(rpcbroker_websockets_t)
 input_server_dbus_chat(rpcbroker_websockets_t)
 updatemgr_dbus_chat(rpcbroker_websockets_t)
@@ -75,6 +79,7 @@ vusbd_dbus_chat(rpcbroker_websockets_t)
 xen_dbus_chat(rpcbroker_websockets_t)
 dbd_dbus_chat(rpcbroker_websockets_t)
 surfman_dbus_chat(rpcbroker_websockets_t)
+
 # access logging
 logging_send_syslog_msg(rpcbroker_t)
 
