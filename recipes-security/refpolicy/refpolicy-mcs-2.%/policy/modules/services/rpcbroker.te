@@ -57,6 +57,9 @@ dbus_system_bus_client(rpcbroker_websockets_t)
 dbus_connect_system_bus(rpcbroker_t)
 dbus_send_system_bus(rpcbroker_t)
 
+networkmanager_dbus_chat(rpcbroker_t)
+networkmanager_dbus_chat(rpcbroker_websockets_t)
+
 # DBus chat rules
 network_daemon_dbus_chat(rpcbroker_t)
 network_slave_dbus_chat(rpcbroker_t)
