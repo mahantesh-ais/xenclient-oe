@@ -29,7 +29,7 @@ start() {
 	echo "Starting rpc-broker"    
 	export LD_PRELOAD=/usr/lib/libv4v-1.0.so.0    
 	export INET_IS_V4V=1
-	start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile $PIDFILE --exec /usr/sbin/rpc-broker -w 192.168.1.19:8080
+	start-stop-daemon --start --quiet --oknodo --background --make-pidfile --pidfile $PIDFILE --exec /usr/sbin/rpc-broker -- -w 192.168.1.19:8080
 }
 stop() {
 	echo "Stopping rpc-broker"
