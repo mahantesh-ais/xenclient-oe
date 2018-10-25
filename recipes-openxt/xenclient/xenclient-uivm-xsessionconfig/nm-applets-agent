@@ -8,51 +8,51 @@ fi
 # Usage: nwd_list_backends
 #   List dbus-path for NetworkManager backends avaiable on stdout.
 #   Format seems consistently: /ndvm/<uuid>
-nwd_list_backends() {
-    local dest="com.citrix.xenclient.networkdaemon"
-    local intf="com.citrix.xenclient.networkdaemon.list_backends"
-    local path="/"
+#nwd_list_backends() {
+#    local dest="com.citrix.xenclient.networkdaemon"
+#    local intf="com.citrix.xenclient.networkdaemon.list_backends"
+#    local path="/"
     # Contact dom0 rpc-proxy and parse the answer.
-    DBUS_SYSTEM_BUS_ADDRESS=tcp:host=1.0.0.0,port=5555 \
-    LD_PRELOAD=/usr/lib/libv4v-1.0.so.0 \
-    INET_IS_V4V=1 \
-        dbus-send --system --print-reply --dest="${dest}" "${path}" "${intf}" \
-        | sed -ne 's|.*string "\(.\+\)".*|\1|p'
-}
+#    DBUS_SYSTEM_BUS_ADDRESS=tcp:host=1.0.0.0,port=5555 \
+#    LD_PRELOAD=/usr/lib/libv4v-1.0.so.0 \
+#    INET_IS_V4V=1 \
+#        dbus-send --system --print-reply --dest="${dest}" "${path}" "${intf}" \
+#        | sed -ne 's|.*string "\(.\+\)".*|\1|p'
+#}
 
 # Usage: networkdomain_config_get_string dbus-path arg
 #   Print the requested configuration (arg) for the given network domain on stdout.
-networkdomain_config_get_string() {
-    local path="$1"
-    local arg="$2"
-    local dest="com.citrix.xenclient.networkdaemon"
-    local intf="org.freedesktop.DBus.Properties.Get"
-
-    DBUS_SYSTEM_BUS_ADDRESS=tcp:host=1.0.0.0,port=5555 \
-    LD_PRELOAD=/usr/lib/libv4v-1.0.so.0 \
-    INET_IS_V4V=1 \
-        dbus-send --system --print-reply --dest="${dest}" "${path}" "${intf}" \
-            string:"com.citrix.xenclient.networkdomain.config" \
-            string:"${arg}" \
-        | sed -ne 's|.*string "\(.\+\)".*|\1|p'
-}
+#networkdomain_config_get_string() {
+#    local path="$1"
+#    local arg="$2"
+#    local dest="com.citrix.xenclient.networkdaemon"
+#    local intf="org.freedesktop.DBus.Properties.Get"
+#
+#    DBUS_SYSTEM_BUS_ADDRESS=tcp:host=1.0.0.0,port=5555 \
+#    LD_PRELOAD=/usr/lib/libv4v-1.0.so.0 \
+#    INET_IS_V4V=1 \
+#        dbus-send --system --print-reply --dest="${dest}" "${path}" "${intf}" \
+#            string:"com.citrix.xenclient.networkdomain.config" \
+#            string:"${arg}" \
+#        | sed -ne 's|.*string "\(.\+\)".*|\1|p'
+#}
 
 # Usage: networkdomain_config_get_uint32 dbus-path arg
 #   Print the requested configuration (arg) for the given network domain on stdout.
-networkdomain_config_get_uint32() {
-    local path="$1"
-    local arg="$2"
-    local dest="com.citrix.xenclient.networkdaemon"
-    local intf="org.freedesktop.DBus.Properties.Get"
-
-    DBUS_SYSTEM_BUS_ADDRESS=tcp:host=1.0.0.0,port=5555 \
-    LD_PRELOAD=/usr/lib/libv4v-1.0.so.0 \
-    INET_IS_V4V=1 \
-        dbus-send --system --print-reply --dest="${dest}" "${path}" "${intf}" \
-            string:"com.citrix.xenclient.networkdomain.config" \
-            string:"${arg}" \
-        | sed -ne 's|.*uint32 \([0-9]\+\).*|\1|p'
-}
+#networkdomain_config_get_uint32() {
+#    local path="$1"
+#    local arg="$2"
+#    local dest="com.citrix.xenclient.networkdaemon"
+#    local intf="org.freedesktop.DBus.Properties.Get"
+#
+#    DBUS_SYSTEM_BUS_ADDRESS=tcp:host=1.0.0.0,port=5555 \
+#    LD_PRELOAD=/usr/lib/libv4v-1.0.so.0 \
+#    INET_IS_V4V=1 \
+#        dbus-send --system --print-reply --dest="${dest}" "${path}" "${intf}" \
+#            string:"com.citrix.xenclient.networkdomain.config" \
+#            string:"${arg}" \
+#        | sed -ne 's|.*uint32 \([0-9]\+\).*|\1|p'
+#}
 
 # Usage nm_applet_pidfile dbus-path
 #   Write pidfile path to track nm-applet running for backend with dbus-path on
@@ -66,10 +66,14 @@ nm_applet_pidfile() {
 #   Start nm-applet, in configured environment for dbus-path NetworkDomain and
 #   reccord a pidfile for process management.
 start_nm_applet() {
-    local dbus_path="$1"
-    local uuid="$(networkdomain_config_get_string ${dbus_path} uuid)"
-    local domid="$(networkdomain_config_get_uint32 ${dbus_path} domid)"
-    local name="$(networkdomain_config_get_string ${dbus_path} name)"
+    #local dbus_path="$1"
+    #local uuid="$(networkdomain_config_get_string ${dbus_path} uuid)"
+    #local domid="$(networkdomain_config_get_uint32 ${dbus_path} domid)"
+    #local name="$(networkdomain_config_get_string ${dbus_path} name)"
+    local dbus_path="/ndvm/00000000_0000_0000_0000_000000000002"
+    local uuid="00000000-0000-0000-0000-000000000002"
+    local domid="1"
+    local name="Network"
     local pidfile="$(nm_applet_pidfile ${dbus_path})"
     local locale="$(xenmgr_get_locale)"
 
@@ -114,19 +118,20 @@ _stop_nm_applet() {
 
 # Usage: stop_nm_applet dbus-path
 #   Stop nm-applet running for the Network backend refered to by dbus-path.
-stop_nm_applet() {
-    local dbus_path="$1"
-    local pidfile="$(nm_applet_pidfile ${dbus_path})"
-
-    _stop_nm_applet "${pidfile}"
-}
+#stop_nm_applet() {
+#    local dbus_path="$1"
+#    local pidfile="$(nm_applet_pidfile ${dbus_path})"
+#
+#    _stop_nm_applet "${pidfile}"
+#}
 
 # Usage: start_all_nm_applets
 #   Start all nm-applets instances, one for each present backend.
 start_all_nm_applets() {
-    for p in $(nwd_list_backends); do
-        start_nm_applet "${p}"
-    done
+    #for p in $(nwd_list_backends); do
+    #    start_nm_applet "${p}"
+    #done
+    start_nm_applet
 }
 
 # Usage: stop_all_nm_applets
@@ -139,22 +144,21 @@ stop_all_nm_applets() {
 
 # Usage: nm_applet_event path.
 #   Handle signal event for nm-applet running for path.
-nm_applet_event() {
-    local path="$1"
-    local state="off"
-
-    for p in $(nwd_list_backends); do
-        if [ "${p}" = "${path}" ]; then
-            state="on"
-            break
-        fi
-    done
-    case "${state}" in
-        "on")   start_nm_applet "${path}" ;;
-        "off")  stop_nm_applet "${path}" ;;
-    esac
-}
-
+#nm_applet_event() {
+#    local path="$1"
+#    local state="off"
+#
+#    for p in $(nwd_list_backends); do
+#        if [ "${p}" = "${path}" ]; then
+#            state="on"
+#            break
+#        fi
+#    done
+#    case "${state}" in
+#        "on")   start_nm_applet "${path}" ;;
+#        "off")  stop_nm_applet "${path}" ;;
+#    esac
+#}
 # Usage: language_event
 #   Restart all nm-applets using new locale.
 language_event() {
@@ -167,9 +171,9 @@ language_event() {
 #   domains.
 monitor_nm_applets() {
     # NetworkDomain change.
-    local nwd_notify_intf="com.citrix.xenclient.networkdomain.notify"
-    local nwd_state_member="backend_state_changed"
-    local nwd_watch="$(dbus_watch_expression signal ${nwd_notify_intf} ${nwd_state_member})"
+#    local nwd_notify_intf="com.citrix.xenclient.networkdomain.notify"
+#    local nwd_state_member="backend_state_changed"
+#    local nwd_watch="$(dbus_watch_expression signal ${nwd_notify_intf} ${nwd_state_member})"
     # Locale.
     local xgr_intf="com.citrix.xenclient.xenmgr"
     local xgr_lang_member="language_changed"
@@ -178,11 +182,11 @@ monitor_nm_applets() {
     # Monitor dbus watches, use "interface.member"
     while read type _ _ _ _ path intf member ; do
         case "${intf}.${member}" in
-            "${nwd_notify_intf}.${nwd_state_member}") nm_applet_event "${path}" ;;
+#            "${nwd_notify_intf}.${nwd_state_member}") nm_applet_event "${path}" ;;
             "${xgr_intf}.${xgr_lang_member}") language_event ;;
             *) continue ;;
         esac
-    done < <( dbus_watch "${nwd_watch}" "${xgr_watch}" )
+    done < <( dbus_watch "${xgr_watch}" )
 }
 
 ## Start an nm-applet for every backend.
@@ -192,4 +196,4 @@ start_all_nm_applets
 monitor_nm_applets
 
 ## This should only happen when X stops, or something went terribly...
-stop_all_nm_applets
+#stop_all_nm_applets
