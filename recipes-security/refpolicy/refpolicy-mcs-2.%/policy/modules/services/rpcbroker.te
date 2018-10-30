@@ -25,12 +25,11 @@ type rpcbroker_exec_t;
 
 # Type for rpc-broker.rules file.
 type rpcbroker_etc_t;
-
-type rpcbroker_websockets_t;
-
 files_type(rpcbroker_etc_t)
 
 type rpcbroker_t;
+type rpcbroker_websockets_t;
+
 init_daemon_domain(rpcbroker_t, rpcbroker_exec_t)
 
 allow rpcbroker_t rpcbroker_etc_t:file rw_file_perms;
