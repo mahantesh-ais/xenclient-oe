@@ -14,7 +14,7 @@ SRC_URI = "git://${OPENXT_GIT_MIRROR}/xctools.git;protocol=${OPENXT_GIT_PROTOCOL
 S = "${WORKDIR}/git/rpc-broker"
 
 INITSCRIPT_NAME = "rpc-broker"
-INITSCRIPT_PARAMS = "defaults 70"
+INITSCRIPT_PARAMS = "defaults 40"
 
 
 inherit autotools pkgconfig update-rc.d
