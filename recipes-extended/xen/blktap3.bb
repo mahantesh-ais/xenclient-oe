@@ -8,6 +8,7 @@ PV = "0+git${SRCPV}"
 SRCREV = "a7832564b4d7e540d2d5a85e2556f571b7f9d89b"
 SRC_URI = "git://github.com/xapi-project/blktap.git;protocol=https \
     file://tapback.initscript \
+    file://fix-vhd-util-validate-keypath.patch \
     file://fix-format-specifier-errors.patch \
     file://compiler-errors-fix.patch \
     file://remove-inline-function-declarations.patch \

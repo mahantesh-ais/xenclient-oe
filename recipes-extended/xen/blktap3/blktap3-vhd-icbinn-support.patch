@@ -1013,7 +1013,7 @@ PATCHES
  #include "libvhd.h"
  
  #define LIBBLOCKCRYPTO_NAME "libblockcrypto.so.0"
-@@ -176,18 +177,76 @@ out:
+@@ -180,18 +181,76 @@ out:
  }
  
  static int
