@@ -1,0 +1,61 @@
+--- a/src/nm-device-wired.c
++++ b/src/nm-device-wired.c
+@@ -147,8 +147,12 @@ carrier_action (NMDeviceWired *self, NMD
+ 				nm_device_queued_state_clear (device);
+ 		}
+ 	} else if (state >= NM_DEVICE_STATE_DISCONNECTED) {
+-		if (!carrier && !nm_device_get_enslaved (device))
++		if (!carrier) {
++			nm_log_info (LOGD_HW | NM_DEVICE_WIRED_LOG_LEVEL (device),
++                			"(%s): queuing state unuavailable ",
++                     			nm_device_get_iface(device));
+ 			nm_device_queue_state (device, NM_DEVICE_STATE_UNAVAILABLE, NM_DEVICE_STATE_REASON_CARRIER);
++                }
+ 	}
+ }
+ 
+@@ -157,8 +161,12 @@ carrier_action_defer_cb (gpointer user_d
+ {
+ 	NMDeviceWired *self = NM_DEVICE_WIRED (user_data);
+ 	NMDeviceWiredPrivate *priv = NM_DEVICE_WIRED_GET_PRIVATE (self);
++        NMDevice *device = NM_DEVICE(self);
+ 
+ 	priv->carrier_action_defer_id = 0;
++	nm_log_info (LOGD_HW | NM_DEVICE_WIRED_LOG_LEVEL (device),
++                     "(%s): calling carrir action",
++                     nm_device_get_iface(device));
+ 	NM_DEVICE_WIRED_GET_CLASS (self)->carrier_action (self,
+ 	                                                  nm_device_get_state (NM_DEVICE (self)),
+ 	                                                  priv->carrier);
+--- a/src/nm-device-bridge.c
++++ b/src/nm-device-bridge.c
+@@ -92,6 +92,16 @@ carrier_action (NMDeviceWired *self, NMD
+ 	 * For these reasons, carrier changes are effectively ignored by overriding
+ 	 * the parent class' carrier handling and doing nothing.
+ 	 */
++	NMDevice *device = NM_DEVICE (self);
++
++	if (state > NM_DEVICE_STATE_DISCONNECTED) {
++		if (!carrier) {
++			nm_log_info (LOGD_BRIDGE,
++                			"(%s): bridge queuing state unuavailable ",
++                     			nm_device_get_iface(device));
++			nm_device_queue_state (device, NM_DEVICE_STATE_DISCONNECTED, NM_DEVICE_STATE_REASON_CARRIER);
++                }
++	}
+ }
+ 
+ static void
+--- a/src/nm-system.c
++++ b/src/nm-system.c
+@@ -105,9 +105,9 @@ xc_netlink_route_delete(int ifindex,
+         struct nl_sock *nlh;
+ 
+         g_return_val_if_fail (route != NULL, FALSE);
++        ret = nm_netlink_route_delete(route);
+         nlh = nm_netlink_get_default_handle ();
+         g_return_val_if_fail (nlh != NULL, FALSE);
+-        ret = rtnl_route_delete(nlh, route, 0);
+ 
+         table = rtnl_route_get_table(route);
+         rtnl_route_set_table(route,aux_table);

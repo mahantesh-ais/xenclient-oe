@@ -1,0 +1,16 @@
+--- a/src/nm-manager.c
++++ b/src/nm-manager.c
+@@ -2373,10 +2373,10 @@ udev_device_added_cb (NMUdevManager *ude
+ 		else if (is_bridge (ifindex)) {
+ 
+ 			/* FIXME: always create device when we handle bridges non-destructively */
+-			if (bridge_created_by_nm (self, iface))
++			//if (bridge_created_by_nm (self, iface))
+ 				device = nm_device_bridge_new (sysfs_path, iface);
+-			else
+-				nm_log_info (LOGD_BRIDGE, "(%s): ignoring bridge not created by NetworkManager", iface);
++			//else
++			//	nm_log_info (LOGD_BRIDGE, "(%s): ignoring bridge not created by NetworkManager", iface);
+ 		} else if (is_vlan (ifindex)) {
+ 			int parent_ifindex = -1;
+ 			NMDevice *parent;

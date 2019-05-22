@@ -1,0 +1,13 @@
+--- a/src/nm-device-ethernet.c
++++ b/src/nm-device-ethernet.c
+@@ -1279,8 +1279,10 @@ deactivate (NMDevice *device)
+ 
+ 	supplicant_interface_release (self);
+ 
++#if 0
+ 	/* Reset MAC address back to initial address */
+ 	_set_hw_addr (self, priv->initial_hw_addr, "reset");
++#endif
+ }
+ 
+ static gboolean

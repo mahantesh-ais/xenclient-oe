@@ -1,0 +1,104 @@
+--- a/Utils.hs
++++ b/Utils.hs
+@@ -70,3 +70,8 @@ anyM p = orM . map p
+ orM = foldr orM2 (return False)
+ orM2 a b = do x <- a
+               if x then return True else b
++
++uuidGen :: IsString a => IO a
++uuidGen =
++    readFile "/proc/sys/kernel/random/uuid" >>= return . fromString . strip
++  where strip = T.unpack . T.strip . T.pack
+--- a/NetworkInterface.hs
++++ b/NetworkInterface.hs
+@@ -76,6 +76,40 @@ import Rpc.Autogen.NmActiveConnectionCli
+ anyBridge = "brany"
+ anyNwObj = "/any"
+ 
++bridgeSetting :: String -> String -- monomorphism
++bridgeSetting = printf "/etc/NetworkManager/system-connections/%s"
++slaveSetting :: String -> String -- monomorphism
++slaveSetting = printf "/etc/NetworkManager/system-connections/%s-slave"
++
++addConnectionSettings :: (Maybe String) -> String -> IO ()
++addConnectionSettings bridge iface = do
++    createDirectoryIfMissing False "/etc/NetworkManager/system-connections"
++    generateBridgeSetting bridge
++    generateSlaveSetting bridge
++    return ()
++
++    where
++        bridgeTemplate = "/etc/network-daemon/bridge-connection"
++        slaveTemplate = "/etc/network-daemon/slave-connection"
++
++        sedReplaceStr = "sed -e 's/<BRIDGE>/%s/g' " ++
++                            "-e 's/<UUID>/%s/g' "
++
++        generateBridgeSetting bridge = do
++            case bridge of
++                Just bridge -> do
++                    let sedCmd = sedReplaceStr ++ " %s > %s"
++                    uuidBridge <- liftIO $ uuidGen
++                    safeSpawnShell $ printf sedCmd bridge (uuidBridge :: String) bridgeTemplate (bridgeSetting bridge)
++
++        generateSlaveSetting bridge = do
++            case bridge of
++                Just bridge -> do
++                    let sedStr = sedReplaceStr ++ " -e 's/<IFACE>/%s/g' "
++                    let sedCmd = sedStr ++ " %s > %s"
++                    uuidSlave <- liftIO $ uuidGen
++                    safeSpawnShell $ printf sedCmd bridge (uuidSlave :: String) iface slaveTemplate (slaveSetting bridge)
++
+ isWired :: NetworkObj -> Bool
+ isWired network = network =~ "wired" :: Bool
+ 
+@@ -434,6 +468,13 @@ configureSharedNetwork brshared interfac
+ configureBridgedNetwork :: String -> String -> String -> String -> IO ()
+ configureBridgedNetwork bridge interface nwType nwMac = do
+     debug $ printf "configureBridgedNetwork : %s %s %s %s" bridge interface nwType nwMac
++    exists <- bridgeExists bridge
++    case exists of
++        False -> do
++                   addConnectionSettings (Just bridge) interface
++                   return ()
++        otherwise -> do
++                       return ()
+     checkAndAddBridgeFwd bridge
+     disableReversePathFilter bridge
+     readProcessOrDie "ifconfig" [interface, "0.0.0.0", "up", "promisc"] []
+--- /dev/null
++++ b/bridge-connection
+@@ -0,0 +1,14 @@
++[connection]
++id=<BRIDGE>
++uuid=<UUID>
++type=bridge
++
++[ipv6]
++method=ignore
++
++[ipv4]
++method=auto
++
++[bridge]
++interface-name=<BRIDGE>
++stp=false
+--- /dev/null
++++ b/slave-connection
+@@ -0,0 +1,16 @@
++[802-3-ethernet]
++interface-name=<IFACE>
++duplex=full
++
++[connection]
++id=<BRIDGE>-slave
++uuid=<UUID>
++type=802-3-ethernet
++master=<BRIDGE>
++slave-type=bridge
++
++[ipv6]
++method=ignore
++
++[ipv4]
++method=auto

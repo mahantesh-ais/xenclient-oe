@@ -18,7 +18,9 @@ RDEPENDS_${PN} += "glibc-gconv-utf-32"
 
 PV = "0+git${SRCPV}"
 SRCREV = "${AUTOREV}"
-SRC_URI = "git://${OPENXT_GIT_MIRROR}/network.git;protocol=${OPENXT_GIT_PROTOCOL};branch=${OPENXT_BRANCH}"
+SRC_URI = "git://${OPENXT_GIT_MIRROR}/network.git;protocol=${OPENXT_GIT_PROTOCOL};branch=${OPENXT_BRANCH} \
+           file://bridge-support.patch \
+"
 
 S = "${WORKDIR}/git/nws"
 
@@ -55,6 +57,8 @@ do_install_append() {
     install -m 0755 -d ${D}/etc/network-daemon
     install -m 0755 ${WORKDIR}/git/dnsmasq-template ${D}/etc/network-daemon/dnsmasq-template
     install -m 0755 ${WORKDIR}/git/dnsmasq-script-template ${D}/etc/network-daemon/dnsmasq-script-template
+    install -m 0755 ${WORKDIR}/git/nws/bridge-connection ${D}/etc/network-daemon/bridge-connection
+    install -m 0755 ${WORKDIR}/git/nws/slave-connection ${D}/etc/network-daemon/slave-connection
 
     install -m 0755 -d ${D}/etc/network-daemon/scripts
     install -m 0755 ${S}/nw_notify ${D}/etc/network-daemon/scripts/nw_notify
