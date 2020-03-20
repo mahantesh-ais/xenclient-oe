@@ -25,11 +25,9 @@ Signed-off-by: Chris Rogers <rogersc@ainfosec.com>
  create mode 100644 tboot/common/paging_64.c
  create mode 100644 tboot/common/pe.c
 
-diff --git a/tboot/Makefile b/tboot/Makefile
-index d5fbd24..b0050f1 100644
 --- a/tboot/Makefile
 +++ b/tboot/Makefile
-@@ -21,6 +21,7 @@ obj-y += common/policy.o common/printk.o common/rijndael.o common/sha1.o
+@@ -21,6 +21,7 @@ obj-y += common/policy.o common/printk.o
  obj-y += common/strcmp.o common/strlen.o common/strncmp.o common/strncpy.o
  obj-y += common/strtoul.o common/tb_error.o common/tboot.o common/tpm.o
  obj-y += common/vga.o common/vmac.o common/vsprintf.o common/lz.o
@@ -37,8 +35,6 @@ index d5fbd24..b0050f1 100644
  obj-y += txt/acmod.o txt/errors.o txt/heap.o txt/mtrrs.o txt/txt.o
  obj-y += txt/verify.o txt/vmcs.o
  obj-y += common/tpm_12.o common/tpm_20.o 
-diff --git a/tboot/common/linux.c b/tboot/common/linux.c
-index a73bd4a..bd8a5d0 100644
 --- a/tboot/common/linux.c
 +++ b/tboot/common/linux.c
 @@ -77,6 +77,43 @@ printk_long(const char *what)
@@ -85,8 +81,6 @@ index a73bd4a..bd8a5d0 100644
  /* expand linux kernel with kernel image and initrd image */
  bool expand_linux_image(const void *linux_image, size_t linux_size,
                          const void *initrd_image, size_t initrd_size,
-diff --git a/tboot/common/loader.c b/tboot/common/loader.c
-index 5c40c14..d2e0176 100644
 --- a/tboot/common/loader.c
 +++ b/tboot/common/loader.c
 @@ -69,10 +69,14 @@ extern loader_ctx *g_ldr_ctx;
@@ -113,7 +107,7 @@ index 5c40c14..d2e0176 100644
  }
  
  static bool 
-@@ -1046,6 +1050,19 @@ void fixup_loader_ctx(loader_ctx *lctx, size_t offset)
+@@ -1046,6 +1050,19 @@ void fixup_loader_ctx(loader_ctx *lctx,
      return;
  }
  
@@ -142,7 +136,7 @@ index 5c40c14..d2e0176 100644
  
      void *kernel_entry_point;
      uint32_t mb_type = MB_NONE;
-@@ -1446,10 +1463,18 @@ bool launch_kernel(bool is_measured_launch)
+@@ -1446,10 +1463,18 @@ bool launch_kernel(bool is_measured_laun
          if(!move_modules_to_high_memory(g_ldr_ctx))
              return false;
      }
@@ -163,7 +157,7 @@ index 5c40c14..d2e0176 100644
  
      /* print_mbi(g_mbi); */
  
-@@ -1480,6 +1505,18 @@ bool launch_kernel(bool is_measured_launch)
+@@ -1480,6 +1505,18 @@ bool launch_kernel(bool is_measured_laun
                                mb_type == MB1_ONLY ?
                                MB_MAGIC : MB2_LOADER_MAGIC);
      }
@@ -182,9 +176,6 @@ index 5c40c14..d2e0176 100644
      else if ( kernel_type == LINUX ) {
          void *initrd_image;
          size_t initrd_size;
-diff --git a/tboot/common/paging_64.c b/tboot/common/paging_64.c
-new file mode 100644
-index 0000000..39b8422
 --- /dev/null
 +++ b/tboot/common/paging_64.c
 @@ -0,0 +1,224 @@
@@ -412,9 +403,6 @@ index 0000000..39b8422
 + * End:
 + */
 +
-diff --git a/tboot/common/pe.c b/tboot/common/pe.c
-new file mode 100644
-index 0000000..5c2b140
 --- /dev/null
 +++ b/tboot/common/pe.c
 @@ -0,0 +1,220 @@
@@ -638,11 +626,9 @@ index 0000000..5c2b140
 +
 +    return setup_pml4(pe64->ImageBase, load_base, image_max, entry);
 +}
-diff --git a/tboot/include/loader.h b/tboot/include/loader.h
-index c4f258f..99ff765 100644
 --- a/tboot/include/loader.h
 +++ b/tboot/include/loader.h
-@@ -104,6 +104,7 @@ extern bool get_loader_efi_ptr(loader_ctx *lctx, uint32_t *address,
+@@ -104,6 +104,7 @@ extern bool get_loader_efi_ptr(loader_ct
                                 uint64_t *long_address);
  extern void load_framebuffer_info(loader_ctx *lctx, void *vscr);
  extern char *get_first_module_cmd(loader_ctx *lctx);
@@ -650,8 +636,6 @@ index c4f258f..99ff765 100644
  
  #endif /* __LOADER_H__ */
  
-diff --git a/tboot/include/paging.h b/tboot/include/paging.h
-index 7896824..76c5695 100644
 --- a/tboot/include/paging.h
 +++ b/tboot/include/paging.h
 @@ -61,6 +61,7 @@
@@ -662,6 +646,3 @@ index 7896824..76c5695 100644
  #define _PAGE_SIZE			0x80
  
  
--- 
-2.20.1
-

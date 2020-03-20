@@ -36,7 +36,7 @@
  }
 --- a/tboot/common/acpi.c
 +++ b/tboot/common/acpi.c
-@@ -183,12 +183,11 @@ static struct acpi_table_header *find_ta
+@@ -181,12 +181,11 @@ static struct acpi_table_header *find_ta
      struct acpi_table_header *table = NULL;
      struct acpi_xsdt *xsdt = get_xsdt(); /* it is ok even on 1.0 tables */
                                           /* because value will be ignored */
@@ -52,7 +52,7 @@
              if ( tb_memcmp(table->signature, table_name,
                          sizeof(table->signature)) == 0 )
                  return table;
-@@ -202,10 +201,8 @@ static struct acpi_table_header *find_ta
+@@ -200,10 +199,8 @@ static struct acpi_table_header *find_ta
              return NULL;
          }
  
@@ -67,7 +67,7 @@
                  return table;
 --- a/tboot/common/tboot.c
 +++ b/tboot/common/tboot.c
-@@ -271,8 +271,12 @@ static void post_launch(void)
+@@ -272,8 +272,12 @@ static void post_launch(void)
      /*
       * export tpm event log
       */
@@ -82,7 +82,7 @@
  
      /* replace map in loader context with copy */
      replace_e820_map(g_ldr_ctx);
-@@ -579,7 +583,9 @@ void shutdown(void)
+@@ -580,7 +584,9 @@ void shutdown(void)
  {
      struct tpm_if *tpm = get_tpm();
      const struct tpm_if_fp *tpm_fp = get_tpm_fp();
@@ -93,7 +93,7 @@
      /* wait-for-sipi only invoked for APs, so skip all BSP shutdown code */
      if ( _tboot_shared.shutdown_type == TB_SHUTDOWN_WFS ) {
          atomic_inc(&ap_wfs_count);
-@@ -594,7 +600,7 @@ void shutdown(void)
+@@ -595,7 +601,7 @@ void shutdown(void)
      }
  
      printk(TBOOT_INFO"wait until all APs ready for txt shutdown\n");
@@ -104,7 +104,7 @@
  
 --- a/tboot/txt/verify.c
 +++ b/tboot/txt/verify.c
-@@ -400,9 +400,11 @@ tb_error_t txt_verify_platform(void)
+@@ -401,9 +401,11 @@ tb_error_t txt_verify_platform(void)
  static bool verify_saved_mtrrs(txt_heap_t *txt_heap)
  {
      os_mle_data_t *os_mle_data;
@@ -481,7 +481,7 @@
                  break;
 --- a/tboot/txt/txt.c
 +++ b/tboot/txt/txt.c
-@@ -992,7 +992,9 @@ tb_error_t txt_launch_environment(loader
+@@ -1031,7 +1031,9 @@ tb_error_t txt_launch_environment(loader
  
      /* save MTRRs before we alter them for SINIT launch */
      os_mle_data = get_os_mle_data_start(txt_heap);
@@ -492,7 +492,7 @@
  
      /* set MTRRs properly for AC module (SINIT); if this fails the MTRRs may
         not be in a good state to continue a launch, so return TB_ERR_FATAL */
-@@ -1241,7 +1243,8 @@ void txt_post_launch(void)
+@@ -1280,7 +1282,8 @@ void txt_post_launch(void)
      }
  
      /* restore pre-SENTER MTRRs that were overwritten for SINIT launch */
@@ -502,7 +502,7 @@
  
      /* now, if there was an error, apply policy */
      apply_policy(err);
-@@ -1272,8 +1275,10 @@ void ap_wait(unsigned int cpuid)
+@@ -1311,8 +1314,10 @@ void ap_wait(unsigned int cpuid)
      misc |= MSR_IA32_MISC_ENABLE_MONITOR_FSM;
      wrmsr(MSR_IA32_MISC_ENABLE, misc);
  
@@ -514,7 +514,7 @@
      mtx_leave(&ap_lock);
  
      printk(TBOOT_INFO"cpu %u mwait'ing\n", cpuid);
-@@ -1287,7 +1292,7 @@ void ap_wait(unsigned int cpuid)
+@@ -1326,7 +1331,7 @@ void ap_wait(unsigned int cpuid)
  
      uint32_t sipi_vec = (uint32_t)_tboot_shared.ap_wake_addr;
      atomic_dec(&ap_wfs_count);
@@ -523,7 +523,7 @@
      cpu_wakeup(cpuid, sipi_vec);
  }
  
-@@ -1325,7 +1330,8 @@ void txt_cpu_wakeup(void)
+@@ -1364,7 +1369,8 @@ void txt_cpu_wakeup(void)
      os_mle_data = get_os_mle_data_start(txt_heap);
  
      /* apply (validated) (pre-SENTER) MTRRs from BSP to each AP */

@@ -19,11 +19,9 @@ Signed-off-by: Eric Chanudet <chanudete@ainfosec.com>
  tboot/include/tpm.h  |  1 +
  3 files changed, 35 insertions(+)
 
-diff --git a/tboot/common/tboot.c b/tboot/common/tboot.c
-index 7d52055..348dc0d 100644
 --- a/tboot/common/tboot.c
 +++ b/tboot/common/tboot.c
-@@ -193,6 +193,9 @@ static void post_launch(void)
+@@ -194,6 +194,9 @@ static void post_launch(void)
      if ( !verify_modules(g_ldr_ctx) )
          apply_policy(TB_ERR_POST_LAUNCH_VERIFICATION);
  
@@ -33,8 +31,6 @@ index 7d52055..348dc0d 100644
      /* verify that tboot is in valid RAM (i.e. E820_RAM) */
      base = (uint64_t)TBOOT_BASE_ADDR;
      size = (uint64_t)((unsigned long)&_end - base);
-diff --git a/tboot/common/tpm.c b/tboot/common/tpm.c
-index b325a97..0ad1205 100644
 --- a/tboot/common/tpm.c
 +++ b/tboot/common/tpm.c
 @@ -42,6 +42,10 @@
@@ -82,11 +78,9 @@ index b325a97..0ad1205 100644
  /*
   * Local variables:
   * mode: C
-diff --git a/tboot/include/tpm.h b/tboot/include/tpm.h
-index bf49d53..4cd9b25 100644
 --- a/tboot/include/tpm.h
 +++ b/tboot/include/tpm.h
-@@ -503,6 +503,7 @@ extern bool release_locality(uint32_t locality);
+@@ -503,6 +503,7 @@ extern bool release_locality(uint32_t lo
  extern bool prepare_tpm(void);
  extern bool tpm_detect(void);
  extern void tpm_print(struct tpm_if *ti);
@@ -94,6 +88,3 @@ index bf49d53..4cd9b25 100644
  extern bool tpm_submit_cmd(u32 locality, u8 *in, u32 in_size, u8 *out, u32 *out_size);
  extern bool tpm_submit_cmd_crb(u32 locality, u8 *in, u32 in_size, u8 *out, u32 *out_size);
  extern bool tpm_wait_cmd_ready(uint32_t locality);
--- 
-2.20.1
-

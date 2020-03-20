@@ -8,8 +8,6 @@ Signed-off-by: Chris Rogers <rogersc@ainfosec.com>
  tboot/common/cmdline.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/tboot/common/cmdline.c b/tboot/common/cmdline.c
-index b7e49c2..a3e7426 100644
 --- a/tboot/common/cmdline.c
 +++ b/tboot/common/cmdline.c
 @@ -529,6 +529,11 @@ void get_tboot_extpol(void)
@@ -24,6 +22,3 @@ index b7e49c2..a3e7426 100644
  }
  
  bool get_tboot_force_tpm2_legacy_log(void)
--- 
-2.20.1
-

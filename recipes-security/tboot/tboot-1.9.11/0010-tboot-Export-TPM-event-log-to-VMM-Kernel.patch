@@ -15,8 +15,6 @@ Signed-off-by: Daniel P. Smith <dpsmith@apertussolutions.com>
  tboot/txt/txt.c         | 129 ++++++++++++++++++++++++++++++++++++++++
  4 files changed, 154 insertions(+)
 
-diff --git a/include/tboot.h b/include/tboot.h
-index abb1ca4..4e7c7be 100644
 --- a/include/tboot.h
 +++ b/include/tboot.h
 @@ -109,6 +109,14 @@ typedef struct __packed {
@@ -61,11 +59,9 @@ index abb1ca4..4e7c7be 100644
  }
  
  #endif    /* __TBOOT_H__ */
-diff --git a/tboot/common/tboot.c b/tboot/common/tboot.c
-index ed7397f..1514e8a 100644
 --- a/tboot/common/tboot.c
 +++ b/tboot/common/tboot.c
-@@ -215,6 +215,15 @@ static void post_launch(void)
+@@ -216,6 +216,15 @@ static void post_launch(void)
      if ( !e820_protect_region(base, size, mem_type) )      
          apply_policy(TB_ERR_FATAL);
  
@@ -81,7 +77,7 @@ index ed7397f..1514e8a 100644
      /*
       * verify modules against policy
       */
-@@ -259,6 +268,18 @@ static void post_launch(void)
+@@ -260,6 +269,18 @@ static void post_launch(void)
          printk(TBOOT_ERR"ap_wake_mwait specified but the CPU doesn't support it.\n");
      }
  
@@ -100,8 +96,6 @@ index ed7397f..1514e8a 100644
      print_tboot_shared(&_tboot_shared);
  
      launch_kernel(true);
-diff --git a/tboot/include/txt/txt.h b/tboot/include/txt/txt.h
-index 28eb6e3..ff29cbf 100644
 --- a/tboot/include/txt/txt.h
 +++ b/tboot/include/txt/txt.h
 @@ -62,6 +62,7 @@ extern void txt_shutdown(void);
@@ -112,11 +106,9 @@ index 28eb6e3..ff29cbf 100644
  
  extern uint32_t g_using_da;
  #endif      /* __TXT_TXT_H__ */
-diff --git a/tboot/txt/txt.c b/tboot/txt/txt.c
-index 037609b..79dc733 100644
 --- a/tboot/txt/txt.c
 +++ b/tboot/txt/txt.c
-@@ -372,6 +372,43 @@ bool evtlog_append_tpm12(uint8_t pcr, tb_hash_t *hash, uint32_t type)
+@@ -373,6 +373,43 @@ bool evtlog_append_tpm12(uint8_t pcr, tb
      return true;
  }
  
@@ -160,7 +152,7 @@ index 037609b..79dc733 100644
  void dump_event_2(void)
  {
      heap_event_log_descr_t *log_descr;
-@@ -477,8 +514,7 @@ bool evtlog_append_tpm2_tcg(uint8_t pcr,
+@@ -478,8 +515,7 @@ bool evtlog_append_tpm2_tcg(uint8_t pcr,
          return false;
      }
  
@@ -170,7 +162,7 @@ index 037609b..79dc733 100644
      event->pcr_index = pcr;
      event->event_type = type;
      event->event_size = 0;  // No event data passed by tboot.
-@@ -499,6 +535,121 @@ bool evtlog_append_tpm2_tcg(uint8_t pcr,
+@@ -500,6 +536,121 @@ bool evtlog_append_tpm2_tcg(uint8_t pcr,
      return true;
  }
  
@@ -292,7 +284,7 @@ index 037609b..79dc733 100644
  bool evtlog_append(uint8_t pcr, hash_list_t *hl, uint32_t type)
  {
      int log_type = get_evtlog_type();
-@@ -525,6 +676,28 @@ bool evtlog_append(uint8_t pcr, hash_lis
+@@ -526,6 +677,28 @@ bool evtlog_append(uint8_t pcr, hash_lis
      return true;
  }
  
@@ -321,6 +313,3 @@ index 037609b..79dc733 100644
  __data uint32_t g_using_da = 0;
  __data acm_hdr_t *g_sinit = 0;
  
--- 
-2.20.1
-

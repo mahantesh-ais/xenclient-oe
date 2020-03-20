@@ -12,11 +12,9 @@ Signed-off-by: Chris Rogers <rogersc@ainfosec.com>
  tboot/include/tpm.h   |  3 ++-
  3 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/tboot/common/tboot.c b/tboot/common/tboot.c
-index 348dc0d..ed7397f 100644
 --- a/tboot/common/tboot.c
 +++ b/tboot/common/tboot.c
-@@ -629,8 +629,15 @@ void shutdown(void)
+@@ -630,8 +630,15 @@ void shutdown(void)
          /* have TPM save static PCRs (in case VMM/kernel didn't) */
          /* per TCG spec, TPM can invalidate saved state if any other TPM
             operation is performed afterwards--so do this last */
@@ -33,11 +31,9 @@ index 348dc0d..ed7397f 100644
  
          /* scrub any secrets by clearing their memory, then flush cache */
          /* we don't have any secrets to scrub, however */
-diff --git a/tboot/common/tpm_20.c b/tboot/common/tpm_20.c
-index 5afdaf7..290ac30 100644
 --- a/tboot/common/tpm_20.c
 +++ b/tboot/common/tpm_20.c
-@@ -2561,6 +2561,21 @@ static bool tpm20_get_random(struct tpm_if *ti, uint32_t locality,
+@@ -2561,6 +2561,21 @@ static bool tpm20_get_random(struct tpm_
      return true;
  }
  
@@ -67,8 +63,6 @@ index 5afdaf7..290ac30 100644
      .cap_pcrs = tpm20_cap_pcrs,
      .context_save = tpm20_context_save,
      .context_load = tpm20_context_load,
-diff --git a/tboot/include/tpm.h b/tboot/include/tpm.h
-index 4cd9b25..ab4a43f 100644
 --- a/tboot/include/tpm.h
 +++ b/tboot/include/tpm.h
 @@ -482,7 +482,8 @@ struct tpm_if_fp {
@@ -81,6 +75,3 @@ index 4cd9b25..ab4a43f 100644
      bool (*context_save)(struct tpm_if *ti, u32 locality, u32 handle, void *context_saved);
      bool (*context_load)(struct tpm_if *ti, u32 locality, void *context_saved, u32 *handle);
      bool (*context_flush)(struct tpm_if *ti, u32 locality, u32 handle);
--- 
-2.20.1
-

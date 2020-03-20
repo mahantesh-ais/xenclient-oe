@@ -34,11 +34,9 @@ Signed-off-by: Eric Chanudet <chanudete@ainfosec.com>
  tboot/include/loader.h |   1 +
  5 files changed, 206 insertions(+)
 
-diff --git a/tboot/common/e820.c b/tboot/common/e820.c
-index a42b357..447100b 100644
 --- a/tboot/common/e820.c
 +++ b/tboot/common/e820.c
-@@ -688,6 +688,29 @@ void get_highest_sized_ram(uint64_t size, uint64_t limit,
+@@ -688,6 +688,29 @@ void get_highest_sized_ram(uint64_t size
  }
  
  
@@ -68,11 +66,9 @@ index a42b357..447100b 100644
  /*
   * Local variables:
   * mode: C
-diff --git a/tboot/common/loader.c b/tboot/common/loader.c
-index 0c7c452..a04f41a 100644
 --- a/tboot/common/loader.c
 +++ b/tboot/common/loader.c
-@@ -2108,6 +2108,183 @@ void determine_loader_type(void *addr, uint32_t magic)
+@@ -2115,6 +2115,183 @@ void determine_loader_type(void *addr, u
       */
  }
  
@@ -256,11 +252,9 @@ index 0c7c452..a04f41a 100644
  /*
   * Local variables:
   * mode: C
-diff --git a/tboot/common/tboot.c b/tboot/common/tboot.c
-index fe8f371..9652c30 100644
 --- a/tboot/common/tboot.c
 +++ b/tboot/common/tboot.c
-@@ -178,6 +178,9 @@ static void post_launch(void)
+@@ -179,6 +179,9 @@ static void post_launch(void)
      /* remove all TXT sinit acm modules before verifying modules */
      remove_txt_modules(g_ldr_ctx);
  
@@ -270,11 +264,9 @@ index fe8f371..9652c30 100644
      /*
       * verify e820 table and adjust it to protect our memory regions
       */
-diff --git a/tboot/include/e820.h b/tboot/include/e820.h
-index efe9a79..5664889 100644
 --- a/tboot/include/e820.h
 +++ b/tboot/include/e820.h
-@@ -88,6 +88,8 @@ extern bool get_ram_ranges(uint64_t *min_lo_ram, uint64_t *max_lo_ram,
+@@ -88,6 +88,8 @@ extern bool get_ram_ranges(uint64_t *min
                             uint64_t *min_hi_ram, uint64_t *max_hi_ram);
  extern void get_highest_sized_ram(uint64_t size, uint64_t limit,
                                    uint64_t *ram_base, uint64_t *ram_size);
@@ -283,11 +275,9 @@ index efe9a79..5664889 100644
  
  /*
   * Memory map descriptor:
-diff --git a/tboot/include/loader.h b/tboot/include/loader.h
-index bfc4633..c4f258f 100644
 --- a/tboot/include/loader.h
 +++ b/tboot/include/loader.h
-@@ -85,6 +85,7 @@ extern bool verify_modules(loader_ctx *lctx);
+@@ -85,6 +85,7 @@ extern bool verify_modules(loader_ctx *l
  extern module_t *get_module(loader_ctx *lctx, unsigned int i);
  extern unsigned int get_module_count(loader_ctx *lctx);
  extern bool remove_txt_modules(loader_ctx *lctx);
@@ -295,6 +285,3 @@ index bfc4633..c4f258f 100644
  
  extern bool	have_loader_memlimits(loader_ctx *lctx);
  extern bool have_loader_memmap(loader_ctx *lctx);
--- 
-2.20.1
-

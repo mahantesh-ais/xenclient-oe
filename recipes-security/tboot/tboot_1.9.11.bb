@@ -13,7 +13,6 @@ SRC_URI = " \
     file://0004-tboot-TB_POLTYPE_WARN_ON_FAILURE-with-pre-post.patch \
     file://0005-tboot-Mark-TPM-region-reserved-if-not-already.patch \
     file://0006-pcr-calc-Add-pcr-calculator-tool.patch \
-    file://0007-tb-polgen-TPM2.0-support.patch \
     file://0008-tboot-Use-SHA256-by-default-with-TPM2.0.patch \
     file://0009-tpm2.0-Perform-orderly-shutdown.patch \
     file://0010-tboot-Export-TPM-event-log-to-VMM-Kernel.patch \
@@ -23,8 +22,8 @@ SRC_URI = " \
     file://gcc9.patch \
 "
 
-SRC_URI[md5sum] = "b5b235ddcecceb3663975e28be16d0d9"
-SRC_URI[sha256sum] = "ae6edcb3f7dcc86993e297108886ae2b2808fab29d1fd29678eafd10bc181185"
+SRC_URI[md5sum] = "5454cae3bf4c4ba47e7dac14ea3088b4"
+SRC_URI[sha256sum] = "d6f2334ae41b90e8403a2cd91a819d54356edcb81af2924f47774c72e48d3a9e"
 
 inherit deploy
 
